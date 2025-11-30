@@ -1,5 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 
+import AuthLayout from "./layouts/auth.layout";
+
 import { sidebarRoutes } from "@/routes";
 import DashboardLayout from "@/layouts/dashboard.layout";
 import SignupPage from "@/pages/authentication";
@@ -13,7 +15,9 @@ import NotificationsPage from "@/pages/notifications";
 function App() {
   return (
     <Routes>
-      <Route element={<SignupPage />} path="/" />
+      <Route element={<AuthLayout />}>
+        <Route element={<SignupPage />} path="/" />
+      </Route>
 
       <Route element={<DashboardLayout />}>
         <Route element={<OverviewPage />} path={sidebarRoutes.overview} />
