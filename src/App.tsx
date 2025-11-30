@@ -4,7 +4,7 @@ import AuthLayout from "./layouts/auth.layout";
 
 import { sidebarRoutes } from "@/routes";
 import DashboardLayout from "@/layouts/dashboard.layout";
-import SignupPage from "@/pages/authentication";
+import SignupPage from "@/pages/authentication/signup_page";
 import OverviewPage from "@/pages/overview";
 import ListingsPage from "@/pages/listings";
 import ClientsPage from "@/pages/clients";

@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 import { Image } from "@heroui/react";
 
 import AuthBg from "@/assets/auth-bg.jpg";
-import Logo from "@/assets/logo.png"
+import Logo from "@/assets/logo.png";
 
 export default function AuthLayout() {
   return (
