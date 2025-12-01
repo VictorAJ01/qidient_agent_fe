@@ -1,14 +1,12 @@
 import React from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FiBarChart2 } from "react-icons/fi";
 import { HiOutlineMenuAlt2 } from "react-icons/hi";
 
 import { headerInfo } from "./header_titles";
 import UserProfileDropdown from "./user_profile_dropdown";
 
-// import OverviewStatCards from "@/pages/overview/components/analytics_stat_cards";
-// import UsersStatCards from "@/pages/users/components/users_stat_cards";
-// import AgentsStatCards from "@/pages/agents/components/agents_stat_cards";
+import OverviewStatsCard from "@/pages/overview/components/overview_stats_card";
 import { sidebarRoutes } from "@/routes";
 
 type HeadProps = {
@@ -18,29 +16,12 @@ type HeadProps = {
 
 export default function Header(props: HeadProps) {
   const location = useLocation();
-  const params = useParams();
-
-  const userDetailsRoute =
-    location.pathname === `${sidebarRoutes.users}/${params.id}`;
-
-  const agentDetailsRoute =
-    location.pathname === `${sidebarRoutes.agents}/${params.id}`;
-
-  const editBlogRoute =
-    location.pathname === `${sidebarRoutes.blog}/edit/${params.id}`;
-
-  const viewBlogRoute =
-    location.pathname === `${sidebarRoutes.blog}/${params.id}`;
-
-  const createPropertyRoute =
-    location.pathname === `${sidebarRoutes.createProperties}/${params.id}`;
 
   const isDisplayHeader = location.pathname !== sidebarRoutes.notifications;
 
   const isAddHeadingVerticalPadding =
     location.pathname === sidebarRoutes.overview ||
-    location.pathname === sidebarRoutes.users ||
-    location.pathname === sidebarRoutes.agents;
+    location.pathname === sidebarRoutes.clients;
 
   const handleOpenSidebar = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -85,61 +66,6 @@ export default function Header(props: HeadProps) {
                     </div>
                   );
               })}
-
-              {userDetailsRoute && (
-                <div className="flex flex-col">
-                  <h1 className="text-lg md:text-2xl font-medium sm:font-semibold text-black">
-                    {headerInfo[2].title}
-                  </h1>
-                  <span className="text-base hidden sm:block font-normal text-agency-purple-200">
-                    {headerInfo[2].description}
-                  </span>
-                </div>
-              )}
-
-              {agentDetailsRoute && (
-                <div className="flex flex-col">
-                  <h1 className="text-lg md:text-2xl font-medium sm:font-semibold text-black">
-                    {headerInfo[4].title}
-                  </h1>
-                  <span className="text-base hidden sm:block font-normal text-agency-purple-200">
-                    {headerInfo[4].description}
-                  </span>
-                </div>
-              )}
-
-              {createPropertyRoute && (
-                <div className="flex flex-col">
-                  <h1 className="text-lg md:text-2xl font-medium sm:font-semibold text-black">
-                    {headerInfo[6].title}
-                  </h1>
-                  <span className="text-base hidden sm:block font-normal text-agency-purple-200">
-                    {headerInfo[6].description}
-                  </span>
-                </div>
-              )}
-
-              {editBlogRoute && (
-                <div className="flex flex-col">
-                  <h1 className="text-lg md:text-2xl font-medium sm:font-semibold text-black">
-                    {headerInfo[9].title}
-                  </h1>
-                  <span className="text-base hidden sm:block font-normal text-agency-purple-200">
-                    {headerInfo[9].description}
-                  </span>
-                </div>
-              )}
-
-              {viewBlogRoute && (
-                <div className="flex flex-col">
-                  <h1 className="text-lg md:text-2xl font-medium sm:font-semibold text-black">
-                    {headerInfo[10].title}
-                  </h1>
-                  <span className="text-base hidden sm:block font-normal text-agency-purple-200">
-                    {headerInfo[10].description}
-                  </span>
-                </div>
-              )}
             </div>
 
             <div className="flex items-center space-x-6">
@@ -149,12 +75,9 @@ export default function Header(props: HeadProps) {
             </div>
           </div>
 
-          {/* {location.pathname === sidebarRoutes.overview && (
-            <OverviewStatCards />
+          {location.pathname === sidebarRoutes.overview && (
+            <OverviewStatsCard />
           )}
-
-          {location.pathname === sidebarRoutes.users && <UsersStatCards />}
-          {location.pathname === sidebarRoutes.agents && <AgentsStatCards />} */}
         </header>
       )}
     </>

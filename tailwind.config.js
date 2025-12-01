@@ -28,6 +28,7 @@ export default {
         "secondary-50": "#FBFFF1",
         "secondary-100": "#8C8C8C",
         "secondary-200": "#69E59E",
+        "dark-blue": "#00429D",
 
         // Purple Shades
         "purple-60": "#703BF7",
