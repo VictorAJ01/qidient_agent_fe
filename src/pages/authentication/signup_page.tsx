@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
 import { Link } from "@heroui/link";
@@ -7,6 +8,12 @@ import { LuUser } from "react-icons/lu";
 import { MdOutlineEmail } from "react-icons/md";
 import { SlPhone } from "react-icons/sl";
 import { TfiKey } from "react-icons/tfi";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Form } from "@heroui/react";
+import { useNavigate } from "react-router-dom";
+
+import { SignUpSchema } from "./schema/auth.schema";
 
 import { authRoutes } from "@/routes";
 
@@ -14,10 +21,24 @@ export default function SignupPage() {
   const [isVisible, setIsVisible] = useState<boolean>(false);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
+  const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignUpSchema>({
+    resolver: yupResolver(SignUpSchema),
+  });
+
+  const onSubmit = (data: SignUpSchema) => {
+    console.log("data", data);
+    navigate(authRoutes.requestOTP);
+  };
 
   return (
     <div className="w-full">
-      <form className="space-y-6">
+      <Form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
         <div>
           <Input
             placeholder="Enter your first name"
@@ -26,6 +47,9 @@ export default function SignupPage() {
             startContent={<LuUser className="text-grey" size={20} />}
             type="text"
             variant="flat"
+            {...register("firstName")}
+            errorMessage={errors?.firstName?.message}
+            isInvalid={!!errors?.firstName?.message}
           />
         </div>
         <div>
@@ -36,6 +60,9 @@ export default function SignupPage() {
             startContent={<LuUser className="text-grey" size={20} />}
             type="text"
             variant="flat"
+            {...register("lastName")}
+            errorMessage={errors?.lastName?.message}
+            isInvalid={!!errors?.lastName?.message}
           />
         </div>
 
@@ -47,6 +74,9 @@ export default function SignupPage() {
             startContent={<MdOutlineEmail className="text-grey" size={20} />}
             type="email"
             variant="flat"
+            {...register("email")}
+            errorMessage={errors?.email?.message}
+            isInvalid={!!errors?.email?.message}
           />
         </div>
 
@@ -58,6 +88,9 @@ export default function SignupPage() {
             startContent={<SlPhone className="text-grey" size={20} />}
             type="text"
             variant="flat"
+            {...register("phone")}
+            errorMessage={errors?.phone?.message}
+            isInvalid={!!errors?.phone?.message}
           />
         </div>
         <div>
@@ -82,6 +115,9 @@ export default function SignupPage() {
             startContent={<TfiKey className="text-grey" size={20} />}
             type={isVisible ? "text" : "password"}
             variant="flat"
+            {...register("password")}
+            errorMessage={errors?.password?.message}
+            isInvalid={!!errors?.password?.message}
           />
         </div>
 
@@ -107,6 +143,9 @@ export default function SignupPage() {
             startContent={<TfiKey className="text-grey" size={20} />}
             type={isVisible ? "text" : "password"}
             variant="flat"
+            {...register("confirmPassword")}
+            errorMessage={errors?.confirmPassword?.message}
+            isInvalid={!!errors?.confirmPassword?.message}
           />
         </div>
         <div className="py-3">
@@ -120,7 +159,7 @@ export default function SignupPage() {
             Sign Up
           </Button>
         </div>
-      </form>
+      </Form>
 
       <div className="flex justify-center items-center">
         <p className="text-base text-black2 font-medium">

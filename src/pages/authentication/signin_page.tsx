@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Input } from "@heroui/input";
 import { Link } from "@heroui/link";
 import { useState } from "react";
@@ -5,13 +6,33 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { MdOutlineEmail } from "react-icons/md";
 import { TfiKey } from "react-icons/tfi";
 import { Button } from "@heroui/button";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Form } from "@heroui/react";
+import { useNavigate } from "react-router-dom";
 
-import { authRoutes } from "@/routes";
+import { SignInSchema } from "./schema/auth.schema";
+
+import { authRoutes, sidebarRoutes } from "@/routes";
 
 export default function SigninPage() {
   const [isVisible, setIsVisible] = useState<boolean>(false);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
+  const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignInSchema>({
+    resolver: yupResolver(SignInSchema),
+  });
+
+  const onSubmit = (data: SignInSchema) => {
+    console.log("data", data);
+    navigate(sidebarRoutes.overview);
+  };
 
   return (
     <div className="w-full space-y-6">
@@ -23,7 +44,7 @@ export default function SigninPage() {
           The premier platform for modern real estate professionals.
         </p>
       </div>
-      <form className="space-y-6">
+      <Form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
         <div>
           <Input
             placeholder="Enter your email address"
@@ -32,6 +53,9 @@ export default function SigninPage() {
             startContent={<MdOutlineEmail className="text-grey" size={20} />}
             type="email"
             variant="flat"
+            {...register("email")}
+            errorMessage={errors?.email?.message}
+            isInvalid={!!errors?.email?.message}
           />
         </div>
         <div>
@@ -56,6 +80,9 @@ export default function SigninPage() {
             startContent={<TfiKey className="text-grey" size={20} />}
             type={isVisible ? "text" : "password"}
             variant="flat"
+            {...register("password")}
+            errorMessage={errors?.password?.message}
+            isInvalid={!!errors?.password?.message}
           />
         </div>
         <div className="flex justify-end">
@@ -78,7 +105,7 @@ export default function SigninPage() {
             Sign In
           </Button>
         </div>
-      </form>
+      </Form>
 
       <div className="flex justify-center items-center">
         <p className="text-base text-black2 font-medium">
