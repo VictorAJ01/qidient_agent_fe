@@ -45,7 +45,7 @@ export default function SigninPage() {
         </p>
       </div>
       <Form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-        <div>
+        <div className="w-full">
           <Input
             placeholder="Enter your email address"
             radius="sm"
@@ -58,7 +58,7 @@ export default function SigninPage() {
             isInvalid={!!errors?.email?.message}
           />
         </div>
-        <div>
+        <div className="w-full">
           <Input
             endContent={
               <button
@@ -85,7 +85,7 @@ export default function SigninPage() {
             isInvalid={!!errors?.password?.message}
           />
         </div>
-        <div className="flex justify-end">
+        <div className="flex justify-end w-full">
           <Link
             className="text-sm font-semibold cursor-pointer"
             href={authRoutes.resetPassword}
@@ -94,7 +94,7 @@ export default function SigninPage() {
           </Link>
         </div>
 
-        <div className="py-3">
+        <div className="py-3 w-full">
           <Button
             fullWidth
             className="bg-primary text-white font-semibold"

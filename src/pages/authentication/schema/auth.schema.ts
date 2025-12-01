@@ -17,5 +17,20 @@ export const SignUpSchema = yup.object().shape({
     .oneOf([yup.ref("password")], "Passwords must match"),
 });
 
+export const ResetPasswordSchema = yup.object().shape({
+  email: yup.string().email().required("Email is required"),
+  password: yup.string().required("Password is required"),
+  confirmPassword: yup
+    .string()
+    .required("Confirm Password")
+    .oneOf([yup.ref("password")], "Passwords must match"),
+});
+
+export const VerifyOtpSchema = yup.object().shape({
+  otp: yup.string().required("OTP is required"),
+});
+
 export type SignInSchema = yup.InferType<typeof SignInSchema>;
 export type SignUpSchema = yup.InferType<typeof SignUpSchema>;
+export type ResetPasswordSchema = yup.InferType<typeof ResetPasswordSchema>;
+export type VerifyOtpSchema = yup.InferType<typeof VerifyOtpSchema>;

@@ -39,7 +39,7 @@ export default function SignupPage() {
   return (
     <div className="w-full">
       <Form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-        <div>
+        <div className="w-full">
           <Input
             placeholder="Enter your first name"
             radius="sm"
@@ -52,7 +52,7 @@ export default function SignupPage() {
             isInvalid={!!errors?.firstName?.message}
           />
         </div>
-        <div>
+        <div className="w-full">
           <Input
             placeholder="Enter your last name"
             radius="sm"
@@ -66,7 +66,7 @@ export default function SignupPage() {
           />
         </div>
 
-        <div>
+        <div className="w-full">
           <Input
             placeholder="Enter your email address"
             radius="sm"
@@ -80,7 +80,7 @@ export default function SignupPage() {
           />
         </div>
 
-        <div>
+        <div className="w-full">
           <Input
             placeholder="Enter your phone number"
             radius="sm"
@@ -93,7 +93,7 @@ export default function SignupPage() {
             isInvalid={!!errors?.phone?.message}
           />
         </div>
-        <div>
+        <div className="w-full">
           <Input
             endContent={
               <button
@@ -121,7 +121,7 @@ export default function SignupPage() {
           />
         </div>
 
-        <div>
+        <div className="w-full">
           <Input
             endContent={
               <button
@@ -148,7 +148,7 @@ export default function SignupPage() {
             isInvalid={!!errors?.confirmPassword?.message}
           />
         </div>
-        <div className="py-3">
+        <div className="py-3 w-full">
           <Button
             fullWidth
             className="bg-primary text-white font-semibold"
