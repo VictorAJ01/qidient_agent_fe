@@ -24,7 +24,7 @@ export default function Header(props: HeadProps) {
     location.pathname === sidebarRoutes.clients;
 
   const handleOpenSidebar = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     e.stopPropagation();
     props.setSidebarOpen(!props.sidebarOpen);
