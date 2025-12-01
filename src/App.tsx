@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 
 import AuthLayout from "./layouts/auth.layout";
 import SigninPage from "./pages/authentication/signin_page";
+import ResetPasswordPage from "./pages/authentication/reset_password_page";
 
 import { authRoutes, sidebarRoutes } from "@/routes";
 import DashboardLayout from "@/layouts/dashboard.layout";
@@ -19,6 +20,10 @@ function App() {
       <Route element={<AuthLayout />}>
         <Route element={<SigninPage />} path={authRoutes.login} />
         <Route element={<SignupPage />} path={authRoutes.signup} />
+        <Route
+          element={<ResetPasswordPage />}
+          path={authRoutes.resetPassword}
+        />
       </Route>
 
       <Route element={<DashboardLayout />}>
