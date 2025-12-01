@@ -1,8 +1,9 @@
 import { Route, Routes } from "react-router-dom";
 
 import AuthLayout from "./layouts/auth.layout";
+import SigninPage from "./pages/authentication/signin_page";
 
-import { sidebarRoutes } from "@/routes";
+import { authRoutes, sidebarRoutes } from "@/routes";
 import DashboardLayout from "@/layouts/dashboard.layout";
 import SignupPage from "@/pages/authentication/signup_page";
 import OverviewPage from "@/pages/overview";
@@ -16,7 +17,8 @@ function App() {
   return (
     <Routes>
       <Route element={<AuthLayout />}>
-        <Route element={<SignupPage />} path="/" />
+        <Route element={<SigninPage />} path={authRoutes.login} />
+        <Route element={<SignupPage />} path={authRoutes.signup} />
       </Route>
 
       <Route element={<DashboardLayout />}>
