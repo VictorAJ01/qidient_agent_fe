@@ -23,9 +23,14 @@ export const headerInfo: Array<HeaderInfo> = [
     description: "View and manage your clients here",
   },
   {
+    title: "Client Details",
+    path: sidebarRoutes.viewClient,
+    description: "View and manage your clients here",
+  },
+  {
     title: "Leads and Inquiries",
     path: sidebarRoutes.leads,
-    description: "View and manage your clients here",
+    description: "View and manage your leads here",
   },
   {
     title: "Bookings",
