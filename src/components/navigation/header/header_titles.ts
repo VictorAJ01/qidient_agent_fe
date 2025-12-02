@@ -8,7 +8,7 @@ export type HeaderInfo = {
 
 export const headerInfo: Array<HeaderInfo> = [
   {
-    title: "My Overflow",
+    title: "My Overview",
     path: sidebarRoutes.overview,
     description: "Track and visualize key performance metrics and data trends",
   },
