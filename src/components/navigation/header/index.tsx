@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { FiBarChart2 } from "react-icons/fi";
 import { HiOutlineMenuAlt2 } from "react-icons/hi";
 
@@ -16,6 +16,10 @@ type HeadProps = {
 
 export default function Header(props: HeadProps) {
   const location = useLocation();
+  const params = useParams();
+
+  const clientDetailsRoute =
+    location.pathname === `${sidebarRoutes.clients}/${params.id}`;
 
   const isDisplayHeader = location.pathname !== sidebarRoutes.notifications;
 
@@ -24,7 +28,7 @@ export default function Header(props: HeadProps) {
     location.pathname === sidebarRoutes.clients;
 
   const handleOpenSidebar = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.stopPropagation();
     props.setSidebarOpen(!props.sidebarOpen);
@@ -66,6 +70,17 @@ export default function Header(props: HeadProps) {
                     </div>
                   );
               })}
+
+              {clientDetailsRoute && (
+                <div className="flex flex-col">
+                  <h1 className="text-lg md:text-2xl font-medium sm:font-semibold text-black">
+                    {headerInfo[3].title}
+                  </h1>
+                  <span className="text-base hidden sm:block font-normal text-agency-purple-200">
+                    {headerInfo[3].description}
+                  </span>
+                </div>
+              )}
             </div>
 
             <div className="flex items-center space-x-6">

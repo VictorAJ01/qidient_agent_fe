@@ -73,7 +73,7 @@ export default function ListingsOverview() {
             return (
               <TableRow
                 key={index}
-                className={`${index !== lastIndex ? "border-b" : ""}`}
+                className={`${index !== lastIndex ? "border-b border-gray-300" : ""}`}
               >
                 <TableCell>
                   <div className="text-xs">
