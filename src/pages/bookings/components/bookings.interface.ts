@@ -1,7 +1,13 @@
+export type BookingStatus =
+  | "confirmed"
+  | "cancelled"
+  | "rescheduled"
+  | "pending";
+
 export interface BookingI {
   id: string;
   date: number;
-  status: "confirmed" | "cancelled" | "rescheduled" | "pending";
+  status: BookingStatus;
   name: string;
   property: string;
   type: string;
@@ -9,7 +15,14 @@ export interface BookingI {
   backgroundColor: string;
 }
 
-export const statusBadges = {
+export const statusBadges: Record<
+  BookingStatus,
+  {
+    label: string;
+    color: string;
+    dot: string;
+  }
+> = {
   confirmed: {
     label: "Confirmed",
     color: "bg-secondary-200/40  text-qidient-green",
@@ -28,7 +41,7 @@ export const statusBadges = {
   pending: {
     label: "Pending",
     color: "bg-qidient-orange-100/40 text-qidient-orange-text",
-    dot: "bg-idient-orange-text",
+    dot: "bg-qidient-orange-text",
   },
 };
 
