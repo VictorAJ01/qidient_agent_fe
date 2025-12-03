@@ -1,0 +1,34 @@
+import { bookings, calendarDates } from "./bookings.interface";
+import BookingCard from "./booking_card";
+
+export default function BookingCalender() {
+  return (
+    <div className="grid grid-cols-2 md:grid-cols-6 gap-4-">
+      {calendarDates.map((bookDate) => {
+        const dateBookings = bookings.filter((b) => b.date === bookDate);
+        const hasBooking = dateBookings.length > 0;
+
+        return (
+          <div
+            key={bookDate}
+            className="bg-light-primary-bg border border-grey-10 p-4- min-h-56"
+          >
+            {/* Date Header */}
+            {/* <div className="mb-4 pb-3 border-b border-gray-200">
+              <h3 className="text-2xl font-bold text-gray-900">{bookDate}</h3>
+            </div> */}
+
+            {/* Booking Cards */}
+            {hasBooking ? (
+              dateBookings.map((booking) => (
+                <BookingCard key={booking.id} booking={booking} />
+              ))
+            ) : (
+              <div className="text-gray-300 text-xs h-32" />
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}

@@ -3,6 +3,8 @@ import { Input } from "@heroui/input";
 import { FaCalendarDays } from "react-icons/fa6";
 import { FiPlus, FiSearch } from "react-icons/fi";
 
+import BookingCalender from "./components/booking_calender";
+
 export default function BookingsPage() {
   return (
     <div className="py-4 space-y-3">
@@ -43,7 +45,9 @@ export default function BookingsPage() {
         </div>
       </div>
 
-      <div>calender here</div>
+      <div>
+        <BookingCalender />
+      </div>
     </div>
   );
 }
