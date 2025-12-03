@@ -9,8 +9,6 @@ import BookingDetailsDrawer from "./booking_details_drawer";
 export default function BookingCard({ booking }: { booking: BookingI }) {
   const [activeBooking, setActiveBooking] = useState<any>(null);
 
-  console.log({ activeBooking });
-
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
   const statusConfig = statusBadges[booking.status];

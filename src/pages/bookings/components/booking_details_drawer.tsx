@@ -3,11 +3,13 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerBody,
-  DrawerFooter,
 } from "@heroui/drawer";
 import { Button } from "@heroui/button";
 import { User } from "@heroui/user";
-
+import { Image } from "@heroui/image";
+import { Divider } from "@heroui/divider";
+import { Card, CardBody } from "@heroui/react";
+import { IoMdClose } from "react-icons/io";
 
 import { BookingI, statusBadges } from "./bookings.interface";
 
@@ -27,11 +29,22 @@ export default function BookingDetailsDrawer({
 
   return (
     <div>
-      <Drawer isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Drawer hideCloseButton isOpen={isOpen} onOpenChange={onOpenChange}>
         <DrawerContent>
           <>
-            <DrawerHeader className="pt-8 flex  justify-between items-center gap-1">
-              <h3 className="text-xl text-black"> Bookings Details</h3>
+            <Button
+              isIconOnly
+              className="pl-4"
+              variant="light"
+              onPress={onClose}
+            >
+              <IoMdClose className="text-grey text-2xl" />
+            </Button>
+            <DrawerHeader className="pt-4 flex  justify-between items-center gap-1">
+              <h3 className="text-xl text-black font-rubik">
+                {" "}
+                Bookings Details
+              </h3>
               {statusConfig && (
                 <span
                   className={`text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-2  ${statusConfig.color}`}
@@ -53,40 +66,84 @@ export default function BookingDetailsDrawer({
                     description="+234 00949 8340"
                     name={booking?.name}
                   />
-
                 </div>
 
-                <div>
-                  
+                <div className="flex gap-2 items-center">
+                  <Image
+                    alt="HeroUI hero Image"
+                    src="https://heroui.com/images/hero-card-complete.jpeg"
+                    width={100}
+                  />
+                  <div>
+                    <p className="text-2xl text-grey font-medium font-rubik">
+                      {booking?.property}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="py-2">
+                  <p className="text-sm text-grey leading-relaxed">
+                    3-bedroom duplex located in the serene and highly
+                    sought-after neighborhood of Jabi. Perfectly suited for
+                    families or savvy investors, this home offers a blend of
+                    modern architecture and functional living.
+                  </p>
                 </div>
               </div>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
-                pulvinar risus non risus hendrerit venenatis. Pellentesque sit
-                amet hendrerit risus, sed porttitor quam.
-              </p>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
-                pulvinar risus non risus hendrerit venenatis. Pellentesque sit
-                amet hendrerit risus, sed porttitor quam.
-              </p>
-              <p>
-                Magna exercitation reprehenderit magna aute tempor cupidatat
-                consequat elit dolor adipisicing. Mollit dolor eiusmod sunt ex
-                incididunt cillum quis. Velit duis sit officia eiusmod Lorem
-                aliqua enim laboris do dolor eiusmod. Et mollit incididunt nisi
-                consectetur esse laborum eiusmod pariatur proident Lorem eiusmod
-                et. Culpa deserunt nostrud ad veniam.
-              </p>
+
+              <div className="space-y-4">
+                <p className="text-base text-grey leading-relaxed">
+                  Viewing type: {booking?.type}
+                </p>
+
+                <div className="bg-grey py-3  text-white text-base text-center font-semibold rounded-lg w-3/4">
+                  {booking?.time} | {booking?.date}-05-2025
+                </div>
+              </div>
+
+              <Divider className="my-4" />
+
+              <div>
+                <Card className="p-2 rounded-lg border-none" shadow="none">
+                  <CardBody className="space-y-3">
+                    <Button
+                      className="w-full font-medium font-rubik"
+                      color="success"
+                      radius="sm"
+                      variant="flat"
+                    >
+                      Confirm booking
+                    </Button>
+
+                    <Button
+                      className="w-full font-medium font-rubik"
+                      color="success"
+                      radius="sm"
+                      variant="flat"
+                    >
+                      Reschedule
+                    </Button>
+
+                    <Button
+                      className="w-ful font-medium font-rubik"
+                      color="success"
+                      radius="sm"
+                      variant="flat"
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      className="w-full font-medium font-rubik"
+                      color="success"
+                      radius="sm"
+                      variant="flat"
+                    >
+                      Message Client
+                    </Button>
+                  </CardBody>
+                </Card>
+              </div>
             </DrawerBody>
-            <DrawerFooter>
-              <Button color="danger" variant="light" onPress={onClose}>
-                Close
-              </Button>
-              <Button color="primary" onPress={onClose}>
-                Action
-              </Button>
-            </DrawerFooter>
           </>
         </DrawerContent>
       </Drawer>
