@@ -77,7 +77,7 @@ const tabs = [
 ];
 
 export default function LeadsPage() {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState<string>("");
   const [activeTab, setActiveTab] = useState<string>("hot");
   const [selected, setSelected] = useState<Record<string, boolean>>({});
   const [page, setPage] = useState<number>(1);
