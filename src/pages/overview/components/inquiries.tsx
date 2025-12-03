@@ -20,13 +20,13 @@ export default function Inquiries() {
       {
         name: "Last 6 months",
         data: Array.from({ length: 6 }, () =>
-          Math.floor(Math.random() * 30000)
+          Math.floor(Math.random() * 30000),
         ),
       },
       {
         name: "Same period last year",
         data: Array.from({ length: 6 }, () =>
-          Math.floor(Math.random() * 30000)
+          Math.floor(Math.random() * 30000),
         ),
       },
     ];
