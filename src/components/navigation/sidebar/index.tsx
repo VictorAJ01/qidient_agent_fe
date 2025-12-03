@@ -28,7 +28,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
 
   const closeSidebar = React.useCallback(
     () => setSidebarOpen(false),
-    [setSidebarOpen]
+    [setSidebarOpen],
   );
 
   React.useEffect(() => {
