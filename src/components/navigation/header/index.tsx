@@ -21,6 +21,9 @@ export default function Header(props: HeadProps) {
   const clientDetailsRoute =
     location.pathname === `${sidebarRoutes.clients}/${params.id}`;
 
+  const listingDetailsRoute =
+    location.pathname === `${sidebarRoutes.listings}/${params.id}`;
+
   const isDisplayHeader = location.pathname !== sidebarRoutes.notifications;
 
   const isAddHeadingVerticalPadding =
@@ -71,13 +74,24 @@ export default function Header(props: HeadProps) {
                   );
               })}
 
+              {listingDetailsRoute && (
+                <div className="flex flex-col">
+                  <h1 className="text-lg md:text-2xl font-medium sm:font-semibold text-black">
+                    {headerInfo[2].title}
+                  </h1>
+                  <span className="text-base hidden sm:block font-normal text-agency-purple-200">
+                    {headerInfo[2].description}
+                  </span>
+                </div>
+              )}
+
               {clientDetailsRoute && (
                 <div className="flex flex-col">
                   <h1 className="text-lg md:text-2xl font-medium sm:font-semibold text-black">
-                    {headerInfo[3].title}
+                    {headerInfo[4].title}
                   </h1>
                   <span className="text-base hidden sm:block font-normal text-agency-purple-200">
-                    {headerInfo[3].description}
+                    {headerInfo[4].description}
                   </span>
                 </div>
               )}

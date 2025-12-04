@@ -11,11 +11,13 @@ import DashboardLayout from "@/layouts/dashboard.layout";
 import SignupPage from "@/pages/authentication/signup_page";
 import OverviewPage from "@/pages/overview";
 import ListingsPage from "@/pages/listings";
+import ListingDetailsPage from "@/pages/listings/components/listing_details_page";
 import ClientsPage from "@/pages/clients";
 import LeadsPage from "@/pages/leads";
 import BookingsPage from "@/pages/bookings";
 import NotificationsPage from "@/pages/notifications";
 import ClientDetailsPage from "@/pages/clients/components/client_details_page";
+import ProfilePage from "@/pages/profile";
 
 function App() {
   return (
@@ -34,6 +36,10 @@ function App() {
       <Route element={<DashboardLayout />}>
         <Route element={<OverviewPage />} path={sidebarRoutes.overview} />
         <Route element={<ListingsPage />} path={sidebarRoutes.listings} />
+        <Route
+          element={<ListingDetailsPage />}
+          path={sidebarRoutes.viewListing}
+        />
         <Route element={<ClientsPage />} path={sidebarRoutes.clients} />
         <Route
           element={<ClientDetailsPage />}
@@ -45,6 +51,7 @@ function App() {
           element={<NotificationsPage />}
           path={sidebarRoutes.notifications}
         />
+        <Route element={<ProfilePage />} path={sidebarRoutes.profile} />
       </Route>
     </Routes>
   );
