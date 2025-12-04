@@ -18,6 +18,11 @@ export const headerInfo: Array<HeaderInfo> = [
     description: "Manage performance metrics, listings, and commission details",
   },
   {
+    title: "Listings",
+    path: sidebarRoutes.viewClient,
+    description: "Manage performance metrics, listings, and commission details",
+  },
+  {
     title: "Clients",
     path: sidebarRoutes.clients,
     description: "View and manage your clients here",
