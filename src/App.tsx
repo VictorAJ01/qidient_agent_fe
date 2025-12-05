@@ -9,6 +9,7 @@ import ClientsPage from "@/pages/clients";
 import LeadsPage from "@/pages/leads";
 import BookingsPage from "@/pages/bookings";
 import NotificationsPage from "@/pages/notifications";
+import LeadsInquiriesPage from "./pages/leads/leads_inquiries";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route element={<ClientsPage />} path={sidebarRoutes.clients} />
         <Route element={<LeadsPage />} path={sidebarRoutes.leads} />
         <Route element={<BookingsPage />} path={sidebarRoutes.bookings} />
+        <Route element={<LeadsInquiriesPage />} path="/leadsinquiriespage" />
         <Route
           element={<NotificationsPage />}
           path={sidebarRoutes.notifications}

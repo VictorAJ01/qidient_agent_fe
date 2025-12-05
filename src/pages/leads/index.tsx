@@ -15,6 +15,9 @@ import { FaTag } from "react-icons/fa6";
 import { IoMdInformationCircle } from "react-icons/io";
 import { Input, Tabs, Tab, Button } from "@heroui/react";
 import { PiTagChevronThin } from "react-icons/pi";
+import { useNavigate } from "react-router-dom";
+import { GrCheckbox } from "react-icons/gr";
+
 
 type Lead = {
   id: string;
@@ -87,6 +90,7 @@ const tabs = [
 
 
 export default function LeadsPage() {
+  const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [activeTab, setActiveTab] = useState<string>("hot");
   const [selected, setSelected] = useState<Record<string, boolean>>({});
@@ -119,6 +123,7 @@ export default function LeadsPage() {
     setSelected((s) => ({ ...s, [id]: !s[id] }));
   };
 
+
   return (
     <div className="min-h-screen bg-gray-50  ">
       <div className="w-full max-w-full mx-auto">
@@ -148,18 +153,18 @@ export default function LeadsPage() {
           </div>
 
           <div className="flex flex-wrap items-center gap-3 border border-gray-100 px-4 py-3 mb-4 rounded-md">
-            <button className="flex items-center gap-1 p-1.5 rounded hover:bg-gray-100">
-              <input type="checkbox" className="w-5 h-5" />
+            <Button className="flex items-center gap-1 p-1.5 rounded  bg-white hover:bg-gray-100">
+              <GrCheckbox className="w-5 h-5" />
               <MdArrowDropDown className="w-5 h-5" />
-            </button>
+            </Button>
 
-            <button className="p-1.5 rounded hover:bg-gray-100">
+            <Button className="p-1.5 rounded  bg-white hover:bg-gray-100">
               <IoReload className="w-5 h-5 text-gray-600" />
-            </button>
+            </Button>
 
-            <button className="p-1.5 rounded hover:bg-gray-100">
+            <Button className="p-1.5 rounded bg-white hover:bg-gray-100">
               <HiDotsVertical className="w-5 h-5 text-gray-600" />
-            </button>
+            </Button>
           </div>
 
           <Tabs
@@ -225,8 +230,8 @@ export default function LeadsPage() {
 
                   <div className="flex-1 min-w-0">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                      <div className="flex flex-wrap items-baseline gap-2 truncate">
-                        <span className="font-semibold text-sm text-gray-900 truncate">
+                      <div className="flex flex-wrap items-baseline gap-2 truncate cursor-pointer" onClick={() => navigate("/leadsinquiriespage")}>
+                        <span className="font-semibold text-sm text-gray-900 truncate cursor-pointer" >
                           {lead.sender}
                         </span>
                         <span className="text-sm font-semibold text-gray-800 truncate">
@@ -246,7 +251,6 @@ export default function LeadsPage() {
               ))}
             </div>
 
-            {/* Pagination */}
             <div className="px-4 py-4 flex justify-center items-center gap-4 flex-wrap">
               <Button
                 isDisabled={page === 1}
