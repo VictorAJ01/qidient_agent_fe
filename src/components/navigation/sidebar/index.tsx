@@ -6,7 +6,7 @@ import { Divider, Image, ScrollShadow, useDisclosure } from "@heroui/react";
 import React from "react";
 import { motion } from "framer-motion";
 import { AiOutlineLogout } from "react-icons/ai";
-import { TfiPieChart } from "react-icons/tfi";
+import { FaRegUserCircle } from "react-icons/fa";
 
 import { sidebarLinks } from "./sidebar_links";
 import { SidebarLink } from "./sidebar_link";
@@ -28,7 +28,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
 
   const closeSidebar = React.useCallback(
     () => setSidebarOpen(false),
-    [setSidebarOpen]
+    [setSidebarOpen],
   );
 
   React.useEffect(() => {
@@ -132,7 +132,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
             </div>
           </ScrollShadow>
           <Divider className="my-2" />
-          <ul className="flex flex-col gap-3 pb-4">
+          {/* <ul className="flex flex-col gap-3 pb-4">
             <li className="group relative hover:bg-agency-purple-100/30 duration-300 ease-linear rounded-lg">
               <SidebarLink
                 icon={TfiPieChart}
@@ -142,11 +142,11 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
                 title="Analytics"
               />
             </li>
-          </ul>
+          </ul> */}
 
           <div className="w-full overflow-hidden pt-[calc(100vh-55rem)] space-y-4 absolute bottom-0">
-            <ul className="flex flex-col gap-3 pb-4">
-              {/* <li className="group relative hover:bg-agency-purple-100/30 duration-300 ease-linear rounded-lg">
+            <ul className="flex flex-col gap-1 pb-4">
+              <li className="group relative hover:bg-agency-purple-100/30 duration-300 ease-linear rounded-lg">
                 <SidebarLink
                   icon={FaRegUserCircle}
                   pathname={sidebarRoutes.profile}
@@ -154,13 +154,15 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
                   sidebarOpen={sidebarOpen}
                   title="Profile"
                 />
-              </li> */}
+              </li>
               <li
-                className="group flex items-center gap-3 hover:bg-agency-purple-100/30 duration-300 ease-linear cursor-pointer rounded-lg py-3"
+                className="group flex items-center gap-3 hover:bg-agency-purple-100/30 duration-300 ease-linear cursor-pointer rounded-lg py-3 pl-1"
                 onClick={logoutModal.onOpen}
               >
-                <AiOutlineLogout className="w-5 h-5 text-dark text-xl text-center" />
-                <div>Logout</div>
+                <AiOutlineLogout className="w-5 h-5 text-dark text-xl text-center text-qidient-gray-text" />
+                <div className="font-normal text-base text-qidient-gray-text">
+                  Logout
+                </div>
               </li>
             </ul>
           </div>

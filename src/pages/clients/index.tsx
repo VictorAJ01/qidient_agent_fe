@@ -1,7 +1,35 @@
+import AllClientsTable from "./components/all_clients_table";
+
+import StatsCard from "@/components/general/stats_card";
+
+const clientsStatCardData = [
+  {
+    title: "Total Clients",
+    figure: 14,
+  },
+  {
+    title: "Active Clients",
+    figure: 12,
+  },
+  {
+    title: "Inactive Clients",
+    figure: 1,
+  },
+  {
+    title: "Blocked Clients",
+    figure: 1,
+  },
+];
+
 export default function ClientsPage() {
   return (
-    <div className="space-y-4">
-      <div>ClientsPage</div>
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
+        {clientsStatCardData.map((item, index) => (
+          <StatsCard key={item.title} {...item} index={index} />
+        ))}
+      </div>
+      <AllClientsTable />
     </div>
   );
 }

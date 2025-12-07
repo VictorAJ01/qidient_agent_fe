@@ -8,7 +8,7 @@ export type HeaderInfo = {
 
 export const headerInfo: Array<HeaderInfo> = [
   {
-    title: "My Overflow",
+    title: "My Overview",
     path: sidebarRoutes.overview,
     description: "Track and visualize key performance metrics and data trends",
   },
@@ -18,14 +18,24 @@ export const headerInfo: Array<HeaderInfo> = [
     description: "Manage performance metrics, listings, and commission details",
   },
   {
+    title: "Listings",
+    path: sidebarRoutes.viewClient,
+    description: "Manage performance metrics, listings, and commission details",
+  },
+  {
     title: "Clients",
     path: sidebarRoutes.clients,
     description: "View and manage your clients here",
   },
   {
+    title: "Client Details",
+    path: sidebarRoutes.viewClient,
+    description: "View and manage your clients here",
+  },
+  {
     title: "Leads and Inquiries",
     path: sidebarRoutes.leads,
-    description: "View and manage your clients here",
+    description: "View and manage your leads here",
   },
   {
     title: "Bookings",

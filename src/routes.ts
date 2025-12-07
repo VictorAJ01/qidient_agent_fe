@@ -11,7 +11,9 @@ export type AuthRoutes = (typeof authRoutes)[keyof typeof authRoutes];
 export const sidebarRoutes = {
   overview: "/dashboard/overview",
   listings: "/dashboard/listings",
+  viewListing: "/dashboard/listings/:id",
   clients: "/dashboard/clients",
+  viewClient: "/dashboard/clients/:id",
   leads: "/dashboard/leads",
   bookings: "/dashboard/bookings",
   profile: "/dashboard/profile",

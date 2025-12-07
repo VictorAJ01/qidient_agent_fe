@@ -3,7 +3,7 @@ import { NavLink, useLocation } from "react-router-dom";
 
 import { SidebarLinkT } from "./sidebar_links";
 
-// import { sidebarRoutes } from "@/routes";
+import { sidebarRoutes } from "@/routes";
 
 type SidebarProps = {
   sidebarOpen: boolean;
@@ -16,28 +16,16 @@ export const SidebarLink = (props: SidebarProps & SidebarLinkT) => {
 
   const exactLocation = location.pathname === props.pathname;
 
-  // const isUserDetailsRoute =
-  //   props.pathname === sidebarRoutes.users &&
-  //   location.pathname.startsWith(`${sidebarRoutes.users}/`);
+  const isClientDetailsRoute =
+    props.pathname === sidebarRoutes.clients &&
+    location.pathname.startsWith(`${sidebarRoutes.clients}/`);
 
-  // const isAgentDetailsRoute =
-  //   props.pathname === sidebarRoutes.agents &&
-  //   location.pathname.startsWith(`${sidebarRoutes.agents}/`);
+  const isListingDetailsRoute =
+    props.pathname === sidebarRoutes.listings &&
+    location.pathname.startsWith(`${sidebarRoutes.listings}/`);
 
-  // const isBlogDetailsRoute =
-  //   props.pathname === sidebarRoutes.blog &&
-  //   location.pathname.startsWith(`${sidebarRoutes.blog}/`);
-
-  // const isPropertyDetailsRoute =
-  //   props.pathname === sidebarRoutes.properties &&
-  //   location.pathname.startsWith(`${sidebarRoutes.properties}/`);
-
-  const isActive = exactLocation;
-  // exactLocation ||
-  // isUserDetailsRoute ||
-  // isBlogDetailsRoute ||
-  // isAgentDetailsRoute ||
-  // isPropertyDetailsRoute;
+  const isActive =
+    exactLocation || isClientDetailsRoute || isListingDetailsRoute;
 
   const closeSidebar = () => {
     if (props.sidebarOpen) {
