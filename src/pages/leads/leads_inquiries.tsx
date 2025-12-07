@@ -144,7 +144,6 @@ export default function LeadsInquiriesPage() {
 
             <Card className="w-full h-[400px] min-h-[400px] sm:flex-[2.5] relative">
               <div>
-                {/* Header */}
                 <div className="flex flex-wrap sm:flex-nowrap gap-3 items-center p-5">
                   <Avatar
                     src="https://i.pravatar.cc/150?u=a04258a2462d826712d"

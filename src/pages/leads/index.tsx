@@ -9,7 +9,7 @@ import { IoMdInformationCircle } from "react-icons/io";
 import { Input, Tabs, Tab, Button, Checkbox, Pagination } from "@heroui/react";
 import { PiTagChevronThin } from "react-icons/pi";
 import { useNavigate } from "react-router-dom";
-import { GrCheckbox } from "react-icons/gr";
+// import { GrCheckbox } from "react-icons/gr";
 
 
 type Lead = {
@@ -80,6 +80,7 @@ const tabs = [
 ];
 
 export default function LeadsPage() {
+  const navigate = useNavigate(); 
   const [query, setQuery] = useState<string>("");
   const [activeTab, setActiveTab] = useState<string>("hot");
   const [selected, setSelected] = useState<Record<string, boolean>>({});
@@ -229,7 +230,7 @@ export default function LeadsPage() {
                   <div className="w-full">
                     <div className="flex justify-between items-center">
                       <div className="flex justify-between items-center gap-24">
-                        <p className="whitespace-nowrap font-semibold text-sm text-black">
+                        <p className="whitespace-nowrap font-semibold text-sm text-black  cursor-pointer" onClick={() => navigate("/leadsinquiriespage")}>
                           {lead.sender}
                         </p>
                         <p className="text-sm text-grey">
