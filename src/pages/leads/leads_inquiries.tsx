@@ -1,11 +1,12 @@
-import { Card, Button, Progress, Divider} from "@heroui/react";
+import { Card, Button, Progress, Divider } from "@heroui/react";
 import { Avatar } from "@heroui/react";
 import { IoEyeOutline } from "react-icons/io5";
 import { PiLockKeyOpenLight } from "react-icons/pi";
 import { IoMdAttach } from "react-icons/io";
 
-export default function LeadsInquiriesPage() {
-  const person = {
+
+
+ const person = {
     firstName: "Praise ",
     lastName: "Madumere",
     Number: "(234) 812-34567",
@@ -57,7 +58,9 @@ export default function LeadsInquiriesPage() {
       bg: "bg-red-50",
     },
   ];
-  
+
+export default function LeadsInquiriesPage() {
+
   return (
     <div className="min-h-screen w-full">
       <div className="w-full max-w-full mx-auto">
@@ -141,10 +144,9 @@ export default function LeadsInquiriesPage() {
           </div>
 
           <div className=" w-full flex flex-col sm:flex-row gap-10">
-
-            <Card className="w-full h-[400px] min-h-[400px] sm:flex-[2.5] relative">
-              <div>
-                <div className="flex flex-wrap sm:flex-nowrap gap-3 items-center p-5">
+            <Card className="w-full min-h-[400px] sm:flex-[2.5] relative">
+              <div className="w-full">
+                <div className="flex flex-wrap gap-3 items-center p-5">
                   <Avatar
                     src="https://i.pravatar.cc/150?u=a04258a2462d826712d"
                     className="w-14 h-14"
@@ -154,16 +156,18 @@ export default function LeadsInquiriesPage() {
                     Praise Madumere
                   </span>
 
+                  {/* Divider only visible on large screens */}
                   <Divider className="hidden sm:block w-40 bg-blue-500" />
 
-                  <p className="font-bold text-lg sm:text-xl flex-1">
+                  {/* Title should wrap on small devices */}
+                  <p className="font-bold text-lg sm:text-xl flex-1 min-w-full sm:min-w-0">
                     Inquiry on 3 Bedroom Terrace Guzepe Aparment
                     <span className="text-blue-500 underline"> #12445</span>
                   </p>
                 </div>
 
-                <div className="">
-                  <div className="max-w-[450px] w-full rounded-2xl bg-blue-100 mx-auto">
+                <div className="px-5">
+                  <div className="max-w-[450px] w-full rounded-2xl bg-blue-100 mx-auto px-3 sm:px-6">
                     <span className="block w-fit rounded-3xl py-2 px-7 bg-blue-500 text-white mx-auto text-sm">
                       25-09-2025
                     </span>
@@ -175,13 +179,12 @@ export default function LeadsInquiriesPage() {
                     </p>
                   </div>
                 </div>
+
                 <div className="p-5">
-                  <div className="max-w-[450px] h-30 w-full rounded-2xl border border-blue-300 mx-auto">
-                    <p className="text-blue-500 text-center py-7 px-4 sm:px-8">
-                    </p>
-                  </div>
+                  <div className="max-w-[450px] w-full h-32 rounded-2xl border border-blue-300 mx-auto"></div>
                 </div>
-                <div className="flex  justify-between max-w-[450px] w-full mx-auto px-4 sm:px-0">
+
+                <div className="flex justify-between items-center max-w-[450px] w-full mx-auto px-4 sm:px-0 pb-5">
                   <div className="bg-blue-100 w-14 h-14 flex items-center justify-center rounded-lg">
                     <IoMdAttach size={25} className="text-blue-800" />
                   </div>
@@ -198,7 +201,7 @@ export default function LeadsInquiriesPage() {
               </div>
             </Card>
 
-            <Card className="w-full h-[400px] sm:flex-[2] ">
+            <Card className="w-full h-[400px] sm:flex-[1.9] ">
               <div className="flex items-center pt-6 px-10 gap-3">
                 <div className="w-6 h-6  rounded-full border-2 border-blue-500 animate-spin-slow"></div>
                 <h2 className="font-semibold text-gray-900 text-lg ">

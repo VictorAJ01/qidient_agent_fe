@@ -8,9 +8,8 @@ import { FaTag } from "react-icons/fa6";
 import { IoMdInformationCircle } from "react-icons/io";
 import { Input, Tabs, Tab, Button, Checkbox, Pagination } from "@heroui/react";
 import { PiTagChevronThin } from "react-icons/pi";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 // import { GrCheckbox } from "react-icons/gr";
-
 
 type Lead = {
   id: string;
@@ -80,7 +79,6 @@ const tabs = [
 ];
 
 export default function LeadsPage() {
-  const navigate = useNavigate(); 
   const [query, setQuery] = useState<string>("");
   const [activeTab, setActiveTab] = useState<string>("hot");
   const [selected, setSelected] = useState<Record<string, boolean>>({});
@@ -115,7 +113,6 @@ export default function LeadsPage() {
   const toggleSelect = (id: string) => {
     setSelected((s) => ({ ...s, [id]: !s[id] }));
   };
-
 
   return (
     <div className="min-h-screen">
@@ -230,9 +227,11 @@ export default function LeadsPage() {
                   <div className="w-full">
                     <div className="flex justify-between items-center">
                       <div className="flex justify-between items-center gap-24">
-                        <p className="whitespace-nowrap font-semibold text-sm text-black  cursor-pointer" onClick={() => navigate("/leadsinquiriespage")}>
-                          {lead.sender}
-                        </p>
+                        <Link to="/leadsinquiriespage">
+                          <p className="whitespace-nowrap font-semibold text-sm text-black cursor-pointer">
+                            {lead.sender}
+                          </p>
+                        </Link>
                         <p className="text-sm text-grey">
                           <span className="font-semibold text-black">
                             {lead.subject}
