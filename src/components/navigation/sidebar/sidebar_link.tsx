@@ -20,12 +20,19 @@ export const SidebarLink = (props: SidebarProps & SidebarLinkT) => {
     props.pathname === sidebarRoutes.clients &&
     location.pathname.startsWith(`${sidebarRoutes.clients}/`);
 
+  const isLeadDetailsRoute =
+    props.pathname === sidebarRoutes.leads &&
+    location.pathname.startsWith(`${sidebarRoutes.leads}/`);
+
   const isListingDetailsRoute =
     props.pathname === sidebarRoutes.listings &&
     location.pathname.startsWith(`${sidebarRoutes.listings}/`);
 
   const isActive =
-    exactLocation || isClientDetailsRoute || isListingDetailsRoute;
+    exactLocation ||
+    isClientDetailsRoute ||
+    isListingDetailsRoute ||
+    isLeadDetailsRoute;
 
   const closeSidebar = () => {
     if (props.sidebarOpen) {

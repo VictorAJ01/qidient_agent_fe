@@ -38,6 +38,11 @@ export const headerInfo: Array<HeaderInfo> = [
     description: "View and manage your leads here",
   },
   {
+    title: "Leads Details",
+    path: sidebarRoutes.viewLeads,
+    description: "View and manage your leads here",
+  },
+  {
     title: "Bookings",
     path: sidebarRoutes.bookings,
     description: "View and manage your bookings here",
