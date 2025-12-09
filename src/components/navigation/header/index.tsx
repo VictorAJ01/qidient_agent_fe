@@ -21,6 +21,9 @@ export default function Header(props: HeadProps) {
   const clientDetailsRoute =
     location.pathname === `${sidebarRoutes.clients}/${params.id}`;
 
+  const leadDetailsRoute =
+    location.pathname === `${sidebarRoutes.leads}/${params.id}`;
+
   const listingDetailsRoute =
     location.pathname === `${sidebarRoutes.listings}/${params.id}`;
 
@@ -92,6 +95,17 @@ export default function Header(props: HeadProps) {
                   </h1>
                   <span className="text-base hidden sm:block font-normal text-agency-purple-200">
                     {headerInfo[4].description}
+                  </span>
+                </div>
+              )}
+
+              {leadDetailsRoute && (
+                <div className="flex flex-col">
+                  <h1 className="text-lg md:text-2xl font-medium sm:font-semibold text-black">
+                    {headerInfo[6].title}
+                  </h1>
+                  <span className="text-base hidden sm:block font-normal text-agency-purple-200">
+                    {headerInfo[6].description}
                   </span>
                 </div>
               )}

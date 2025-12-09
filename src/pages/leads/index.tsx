@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { HiOutlineSearch, HiDotsVertical } from "react-icons/hi";
 import { SlCalender } from "react-icons/sl";
 import { MdArrowDropDown } from "react-icons/md";
@@ -8,37 +9,8 @@ import { FaTag } from "react-icons/fa6";
 import { IoMdInformationCircle } from "react-icons/io";
 import { Input, Tabs, Tab, Button, Checkbox, Pagination } from "@heroui/react";
 import { PiTagChevronThin } from "react-icons/pi";
-import { Link } from "react-router-dom";
-// import { GrCheckbox } from "react-icons/gr";
 
-type Lead = {
-  id: string;
-  sender: string;
-  subject: string;
-  preview: string;
-  time: string;
-  channel?: string;
-};
-
-const initialLeads: Lead[] = [
-  {
-    id: "1",
-    sender: "Praise Madumere",
-    subject: "Hiya",
-    preview: "Inquiry on Guzape apartment",
-    time: "10:41 PM",
-    channel: "Website",
-  },
-  ...Array.from({ length: 10 }).map((_, i) => ({
-    id: String(i + 2),
-    sender: "Theresa Webb",
-    subject: "Hello",
-    preview:
-      "Sunt qui esse pariatur duis deserunt mollit dolore cillum minim tempor enim.",
-    time: "12:01 PM",
-    channel: "Referrals",
-  })),
-].flat();
+import { initialLeads } from "./types/leads.types";
 
 const tabs = [
   {
@@ -246,7 +218,6 @@ export default function LeadsPage() {
                         </div>
                       </div>
                     </Link>
-
                   </div>
                 </div>
               ))}
