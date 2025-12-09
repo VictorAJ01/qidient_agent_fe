@@ -34,28 +34,28 @@ import { IoMdAttach } from "react-icons/io";
       title: "Praiz Chuks Replied",
       subtitle: "Luxury Apartment in Ikoyi",
       time: "2 hours ago",
-      bg: "bg-blue-50",
+      bg: "bg-blue-100",
     },
     {
       id: 2,
       title: "Lead Archived",
       subtitle: "Terrace Duplex in Lekki",
       time: "1 day ago",
-      bg: "bg-green-50",
+      bg: "bg-green-100",
     },
     {
       id: 3,
       title: "Viewing Schedule set",
       subtitle: "Terrace Duplex in Lekki",
       time: "2 days ago",
-      bg: "bg-yellow-50",
+      bg: "bg-yellow-100",
     },
     {
       id: 4,
       title: "Viewing Schedule set",
       subtitle: "Terrace Duplex in Lekki",
       time: "2 days ago",
-      bg: "bg-red-50",
+      bg: "bg-red-100",
     },
   ];
 
