@@ -225,27 +225,28 @@ export default function LeadsPage() {
                   <PiTagChevronThin className="w-5 h-5 text-grey" />
 
                   <div className="w-full">
-                    <div className="flex justify-between items-center">
-                      <div className="flex justify-between items-center gap-24">
-                        <Link to="/leadsinquiriespage">
+                    <Link to={`/dashboard/leads/${lead.id}`}>
+                      <div className="flex justify-between items-center">
+                        <div className="flex justify-between items-center gap-24">
                           <p className="whitespace-nowrap font-semibold text-sm text-black cursor-pointer">
                             {lead.sender}
                           </p>
-                        </Link>
-                        <p className="text-sm text-grey">
-                          <span className="font-semibold text-black">
-                            {lead.subject}
-                          </span>{" "}
-                          - {lead.preview}
-                        </p>
+                          <p className="text-sm text-grey">
+                            <span className="font-semibold text-black">
+                              {lead.subject}
+                            </span>{" "}
+                            - {lead.preview}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-sm font-semibold text-black whitespace-nowrap">
+                            {" "}
+                            {lead.time}
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-sm font-semibold text-black whitespace-nowrap">
-                          {" "}
-                          {lead.time}
-                        </p>
-                      </div>
-                    </div>
+                    </Link>
+
                   </div>
                 </div>
               ))}

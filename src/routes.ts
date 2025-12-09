@@ -15,6 +15,7 @@ export const sidebarRoutes = {
   clients: "/dashboard/clients",
   viewClient: "/dashboard/clients/:id",
   leads: "/dashboard/leads",
+  viewLeads: "/dashboard/leads/:id",
   bookings: "/dashboard/bookings",
   profile: "/dashboard/profile",
   notifications: "/dashboard/notifications",
