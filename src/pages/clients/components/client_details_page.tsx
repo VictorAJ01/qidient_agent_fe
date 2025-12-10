@@ -22,7 +22,7 @@ export default function ClientDetailsPage() {
 
   return (
     <div className="min-h-screen">
-      <div className="mx-auto max-w-7xl space-y-6">
+      <div className="mx-auto space-y-6">
         <div className="px-4 lg:px-7 py-4 lg:py-6 bg-white rounded-lg space-y-4">
           <div className="flex flex-wrap lg:flex-nowrap gap-4 lg:gap-7 w-full">
             <div>

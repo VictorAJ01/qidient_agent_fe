@@ -5,6 +5,7 @@ import SigninPage from "./pages/authentication/signin_page";
 import ResetPasswordPage from "./pages/authentication/reset_password_page";
 import RequestOtpPage from "./pages/authentication/request_otp_page";
 import VerifyOtpPage from "./pages/authentication/verify_otp_page";
+import LeadsInquiriesPage from "./pages/leads/leads_inquiries";
 
 import { authRoutes, sidebarRoutes } from "@/routes";
 import DashboardLayout from "@/layouts/dashboard.layout";
@@ -47,6 +48,10 @@ function App() {
         />
         <Route element={<LeadsPage />} path={sidebarRoutes.leads} />
         <Route element={<BookingsPage />} path={sidebarRoutes.bookings} />
+        <Route
+          element={<LeadsInquiriesPage />}
+          path={sidebarRoutes.viewLeads}
+        />
         <Route
           element={<NotificationsPage />}
           path={sidebarRoutes.notifications}
