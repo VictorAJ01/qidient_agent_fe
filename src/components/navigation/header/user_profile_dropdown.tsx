@@ -52,7 +52,7 @@ export default function UserProfileDropdown() {
           >
             <User
               avatarProps={{
-                src: "",
+                src: "https://avatars.githubusercontent.com/u/30373425?v=4",
                 showFallback: true,
               }}
               className="transition-transform hidden md:flex gap-3"
@@ -61,7 +61,7 @@ export default function UserProfileDropdown() {
                 description: "font-rubik text-secondary-100",
               }}
               description="Agent"
-              name="Victor Femi"
+              name="Praiz Chuks"
             />
             <Avatar
               showFallback
