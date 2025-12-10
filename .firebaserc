@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "prop-site"
+  },
+  "targets": {
+    "prop-site": {
+      "hosting": {
+        "agent": [
+          "qidient-agent"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

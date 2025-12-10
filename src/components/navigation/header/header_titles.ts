@@ -53,4 +53,9 @@ export const headerInfo: Array<HeaderInfo> = [
     description:
       "View detailed financial reports based on user activity, listing performance, search trends.",
   },
+  {
+    title: "Profile Settings",
+    path: sidebarRoutes.profile,
+    description: "View and modify your profile information",
+  },
 ];
