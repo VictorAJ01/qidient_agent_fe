@@ -1,13 +1,12 @@
 import { Route, Routes } from "react-router-dom";
 
-import AuthLayout from "./layouts/auth.layout";
-import SigninPage from "./pages/authentication/signin.page";
-import ResetPasswordPage from "./pages/authentication/reset_password.page";
-import RequestOtpPage from "./pages/authentication/request_otp.page";
-import VerifyOtpPage from "./pages/authentication/verify_otp.page";
-import LeadsInquiriesPage from "./pages/leads/leads_inquiries";
-
 import { authRoutes, sidebarRoutes } from "@/routes";
+import AuthLayout from "@/layouts/auth.layout";
+import SigninPage from "@/pages/authentication/signin.page";
+import VerifyOtpPage from "@/pages/authentication/verify_otp.page";
+import OtpSuccessfulVerificationPage from "@/pages/authentication/otp_verified.page";
+import ResetPasswordPage from "@/pages/authentication/reset_password.page";
+import LeadsInquiriesPage from "@/pages/leads/leads_inquiries";
 import DashboardLayout from "@/layouts/dashboard.layout";
 import SignupPage from "@/pages/authentication/signup.page";
 import OverviewPage from "@/pages/overview";
@@ -30,8 +29,11 @@ function App() {
           element={<ResetPasswordPage />}
           path={authRoutes.resetPassword}
         />
-        <Route element={<RequestOtpPage />} path={authRoutes.requestOTP} />
         <Route element={<VerifyOtpPage />} path={authRoutes.verifyOTP} />
+        <Route
+          element={<OtpSuccessfulVerificationPage />}
+          path={authRoutes.otpSuccess}
+        />
       </Route>
 
       <Route element={<DashboardLayout />}>

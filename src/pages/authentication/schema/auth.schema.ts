@@ -1,5 +1,7 @@
 import * as yup from "yup";
 
+import { Role } from "../auth.type";
+
 export const SignInSchema = yup.object().shape({
   email: yup.string().email().required("Email is required"),
   password: yup.string().required("Password is required"),
@@ -20,6 +22,12 @@ export const SignUpSchema = yup.object().shape({
     .string()
     .required("Confirm Password")
     .oneOf([yup.ref("password")], "Passwords must match"),
+  role: yup
+    .mixed<Role>()
+    .oneOf(["user", "super-admin", "agent"], "Invalid role selected")
+    .required("Role is required"),
+  deviceName: yup.string().required("Device name is required"),
+  deviceType: yup.string().required("Device type is required"),
 });
 
 export const ResetPasswordSchema = yup.object().shape({

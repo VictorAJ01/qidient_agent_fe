@@ -14,11 +14,13 @@ interface iCredentials {
   uid: string;
 }
 
-export const setCredentials = (token: string, uid: string) => {
+export const setCredentials = (token: string, uid?: string) => {
   const p: Storage = window.localStorage;
 
   p.setItem("t", token);
-  p.setItem("u", uid);
+  if (uid) {
+    p.setItem("u", uid);
+  }
 };
 
 export const resetCredentials = () => {

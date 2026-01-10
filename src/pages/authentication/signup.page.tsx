@@ -9,12 +9,16 @@ import { SlPhone } from "react-icons/sl";
 import { TfiKey } from "react-icons/tfi";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Form } from "@heroui/react";
+import { addToast, Form } from "@heroui/react";
 import { useNavigate } from "react-router-dom";
+import { isMobile, osName } from "react-device-detect";
+import { useMutation } from "@tanstack/react-query";
 
 import { SignUpSchema } from "./schema/auth.schema";
+import { signupApi } from "./api/auth.api";
 
 import { authRoutes } from "@/routes";
+import { setCredentials } from "@/common/persistence";
 
 export default function SignupPage() {
   const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -28,11 +32,46 @@ export default function SignupPage() {
     formState: { errors },
   } = useForm<SignUpSchema>({
     resolver: yupResolver(SignUpSchema),
+    defaultValues: {
+      deviceName: osName,
+      deviceType: isMobile ? "smartphone" : "desktop",
+      role: "user",
+    },
+  });
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: signupApi,
+    onSuccess: (data) => {
+      setCredentials(data.accessToken);
+      addToast({
+        title: "Signup successful",
+        description: "Verify otp",
+        color: "success",
+      });
+      navigate(authRoutes.verifyOTP);
+    },
+    onError: (error: string) => {
+      addToast({
+        title: "Signup failed",
+        description: error,
+        color: "danger",
+      });
+    },
   });
 
   const onSubmit = (data: SignUpSchema) => {
-    console.log("data", data);
-    navigate(authRoutes.requestOTP);
+    const payload = {
+      deviceName: data.deviceName,
+      deviceType: data.deviceType,
+      email: data.email.trim().toLowerCase(),
+      password: data.password,
+      firstName: data.firstName.trim(),
+      lastName: data.lastName.trim(),
+      phone: data.phone,
+      role: data.role,
+    };
+
+    mutate(payload);
   };
 
   return (
@@ -151,11 +190,12 @@ export default function SignupPage() {
           <Button
             fullWidth
             className="bg-primary text-white font-semibold"
+            isLoading={isPending}
             radius="sm"
             size="lg"
             type="submit"
           >
-            Sign Up
+            {isPending ? "Submitting..." : "Sign Up"}
           </Button>
         </div>
       </Form>

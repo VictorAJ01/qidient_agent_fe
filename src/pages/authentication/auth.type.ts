@@ -1,16 +1,35 @@
-export type LoginResponsePayload = {
-  token: string;
-  userId: string;
+export type Role = "user" | "super-admin" | "agent";
+export type DeviceType =
+  | "smartphone"
+  | "tablet"
+  | "desktop"
+  | "laptop"
+  | string;
+
+export type SignupPayload = {
+  deviceName: string;
+  deviceType: DeviceType;
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  role: Role;
+};
+
+export type SignupResponsePayload = {
+  accessToken: string;
+  otp: string;
 };
 
 export type LoginPayload = {
   email: string;
   password: string;
   deviceName: string;
-  deviceType: "smartphone" | "tablet" | "desktop" | "laptop" | string;
+  deviceType: DeviceType;
 };
 
-export type LoginResponse = {
+export type LoginResponsePayload = {
   accessToken: string;
   userId: string;
   firstName: string;
@@ -19,12 +38,28 @@ export type LoginResponse = {
   email: string;
   createdAt: string;
   updatedAt: string;
-  role: "user" | "admin" | "agent";
+  role: Role;
 };
 
-export type AuthResponsePayload = {
-  accessToken: string;
+export type User = {
+  _id: string;
+  email: string;
+  method: string;
+  status: string;
+  role: Role;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+};
+
+export type OtpPayload = {
   otp: string;
+};
+
+export type OtpResponsePayload = {
+  accessToken: string;
+  refreshToken: string;
+  user: User;
 };
 
 export type ResetPasswordPayload = {

@@ -1,9 +1,16 @@
-import { LoginPayload, LoginResponse } from "../auth.type";
+import {
+  LoginPayload,
+  LoginResponsePayload,
+  OtpPayload,
+  OtpResponsePayload,
+  SignupPayload,
+  SignupResponsePayload,
+} from "../auth.type";
 
 import { Api } from "@/api";
 
 const loginApi = async (payload: LoginPayload) => {
-  const response = await Api.post<LoginResponse, LoginResponse>(
+  const response = await Api.post<LoginResponsePayload, LoginResponsePayload>(
     "/v1/auth/login",
     payload,
   );
@@ -11,4 +18,22 @@ const loginApi = async (payload: LoginPayload) => {
   return response;
 };
 
-export { loginApi };
+const signupApi = async (payload: SignupPayload) => {
+  const response = await Api.post<SignupResponsePayload, SignupResponsePayload>(
+    "/v1/auth/signup",
+    payload,
+  );
+
+  return response;
+};
+
+const verifyOtpApi = async (payload: OtpPayload) => {
+  const response = await Api.post<OtpResponsePayload, OtpResponsePayload>(
+    "/v1/auth/verify-otp",
+    payload,
+  );
+
+  return response;
+};
+
+export { loginApi, signupApi, verifyOtpApi };

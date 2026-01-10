@@ -1,8 +1,8 @@
 export const authRoutes = {
   login: "/",
   signup: "/signup",
-  requestOTP: "/request-otp",
   verifyOTP: "/verify-otp",
+  otpSuccess: "/otp-success",
   resetPassword: "/reset-password",
 } as const;
 
