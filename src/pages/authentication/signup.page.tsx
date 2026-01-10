@@ -35,7 +35,7 @@ export default function SignupPage() {
     defaultValues: {
       deviceName: osName,
       deviceType: isMobile ? "smartphone" : "desktop",
-      role: "user",
+      role: "agent",
     },
   });
 
