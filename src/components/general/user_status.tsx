@@ -1,58 +1,72 @@
-import React from "react";
-
-export type UserStatus =
+export type Status =
   | "active"
   | "inactive"
   | "deleted"
   | "suspended"
   | "blocked"
+  | "accepted"
+  | "pending"
+  | "rejected"
   | string;
 
-type UserStatusProps = {
-  status: UserStatus;
+type StatusProps = {
+  status: Status;
   size?: "sm" | "md" | "lg";
 };
 
-const UserStatusBadge: React.FC<UserStatusProps> = ({
-  status,
-  size = "md",
-}) => {
+export default function StatusBadge({ status, size = "md" }: StatusProps) {
   const getStatusConfig = () => {
-    switch (status.toLowerCase()) {
+    // Normalize status to lowercase to ensure case-insensitive matching
+    const normalizedStatus = status.toLowerCase();
+
+    switch (normalizedStatus) {
+      // Green / Success States
       case "active":
+      case "accepted":
         return {
-          label: "Active",
+          label:
+            normalizedStatus.charAt(0).toUpperCase() +
+            normalizedStatus.slice(1), // Capitalizes first letter
           dotColor: "bg-green-400",
           dotBorderColor: "border-green-400",
         };
+
+      // Red / Danger / Error States
       case "blocked":
+      case "rejected":
+      case "deleted":
         return {
           dotColor: "bg-red-400",
           dotBorderColor: "border-red-400",
-          label: "Blocked",
+          label:
+            normalizedStatus.charAt(0).toUpperCase() +
+            normalizedStatus.slice(1),
         };
+
+      // Yellow / Warning / Waiting States
+      case "pending":
+      case "suspended":
+        return {
+          dotBorderColor: "border-yellow-400",
+          label:
+            normalizedStatus.charAt(0).toUpperCase() +
+            normalizedStatus.slice(1),
+          dotColor: "bg-yellow-400",
+        };
+
+      // Gray / Neutral States
       case "inactive":
         return {
           dotBorderColor: "border-gray-400",
           label: "Inactive",
           dotColor: "bg-gray-400",
         };
-      case "pending":
-        return {
-          dotBorderColor: "border-yellow-400",
-          label: "Pending",
-          dotColor: "bg-yellow-400",
-        };
-      case "suspended":
-        return {
-          dotBorderColor: "border-yellow-400",
-          label: "Suspended",
-          dotColor: "bg-yellow-400",
-        };
+
+      // Fallback
       default:
         return {
           dotBorderColor: "border-gray-400",
-          label: "Unknown",
+          label: status || "Unknown",
           dotColor: "bg-gray-400",
         };
     }
@@ -86,9 +100,10 @@ const UserStatusBadge: React.FC<UserStatusProps> = ({
           className={`${sizeClasses[size].dot} ${config.dotColor} rounded-full`}
         />
       </div>
-      <p className="font-medium text-xs text-grey-02">{config.label}</p>
+      {/* Assuming text-grey-02 is a custom color in your tailwind config */}
+      <p className={`font-medium ${sizeClasses[size].text} text-grey-02`}>
+        {config.label}
+      </p>
     </div>
   );
-};
-
-export default UserStatusBadge;
+}
