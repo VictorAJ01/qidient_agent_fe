@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
 import { Link } from "@heroui/link";

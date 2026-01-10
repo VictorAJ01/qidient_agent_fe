@@ -3,6 +3,11 @@ import * as yup from "yup";
 export const SignInSchema = yup.object().shape({
   email: yup.string().email().required("Email is required"),
   password: yup.string().required("Password is required"),
+  deviceName: yup
+    .string()
+    .required("Device name is required")
+    .max(100, "Device name too long"),
+  deviceType: yup.string().required("Device type is required"),
 });
 
 export const SignUpSchema = yup.object().shape({

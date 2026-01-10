@@ -1,15 +1,15 @@
 import { Route, Routes } from "react-router-dom";
 
 import AuthLayout from "./layouts/auth.layout";
-import SigninPage from "./pages/authentication/signin_page";
-import ResetPasswordPage from "./pages/authentication/reset_password_page";
-import RequestOtpPage from "./pages/authentication/request_otp_page";
-import VerifyOtpPage from "./pages/authentication/verify_otp_page";
+import SigninPage from "./pages/authentication/signin.page";
+import ResetPasswordPage from "./pages/authentication/reset_password.page";
+import RequestOtpPage from "./pages/authentication/request_otp.page";
+import VerifyOtpPage from "./pages/authentication/verify_otp.page";
 import LeadsInquiriesPage from "./pages/leads/leads_inquiries";
 
 import { authRoutes, sidebarRoutes } from "@/routes";
 import DashboardLayout from "@/layouts/dashboard.layout";
-import SignupPage from "@/pages/authentication/signup_page";
+import SignupPage from "@/pages/authentication/signup.page";
 import OverviewPage from "@/pages/overview";
 import ListingsPage from "@/pages/listings";
 import ListingDetailsPage from "@/pages/listings/components/listing_details_page";

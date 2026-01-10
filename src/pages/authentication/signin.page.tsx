@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { Input } from "@heroui/input";
 import { Link } from "@heroui/link";
 import { useState } from "react";
@@ -6,14 +5,18 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { MdOutlineEmail } from "react-icons/md";
 import { TfiKey } from "react-icons/tfi";
 import { Button } from "@heroui/button";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Form } from "@heroui/react";
+import { addToast, Form } from "@heroui/react";
 import { useNavigate } from "react-router-dom";
+import { osName, isMobile } from "react-device-detect";
+import { useMutation } from "@tanstack/react-query";
 
 import { SignInSchema } from "./schema/auth.schema";
+import { loginApi } from "./api/auth.api";
 
 import { authRoutes, sidebarRoutes } from "@/routes";
+import { setCredentials } from "@/common/persistence";
 
 export default function SigninPage() {
   const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -27,16 +30,45 @@ export default function SigninPage() {
     formState: { errors },
   } = useForm<SignInSchema>({
     resolver: yupResolver(SignInSchema),
+    defaultValues: {
+      deviceName: osName,
+      deviceType: isMobile ? "smartphone" : "desktop",
+    },
   });
 
-  const onSubmit = (data: SignInSchema) => {
-    console.log("data", data);
-    navigate(sidebarRoutes.overview);
+  const { mutate, isPending } = useMutation({
+    mutationFn: loginApi,
+    onSuccess: (data) => {
+      setCredentials(data.accessToken, data.userId);
+      addToast({
+        title: "Login successful",
+        color: "success",
+      });
+      navigate(sidebarRoutes.overview);
+    },
+    onError: (error: string) => {
+      addToast({
+        title: "Login failed",
+        description: error,
+        color: "danger",
+      });
+    },
+  });
+
+  const onSubmit: SubmitHandler<SignInSchema> = (data) => {
+    const payload = {
+      email: data.email.trim().toLowerCase(),
+      password: data.password,
+      deviceName: data.deviceName,
+      deviceType: data.deviceType,
+    };
+
+    mutate(payload);
   };
 
   return (
     <div className="w-full space-y-6">
-      <div className="max-w-xs space-y-2">
+      <div className="max-w-md 2xl:max-w-xs space-y-2">
         <h3 className="text-3xl lg:text-4xl font-bold leading-tight text-black">
           Elevate Your Property Business
         </h3>
@@ -98,11 +130,12 @@ export default function SigninPage() {
           <Button
             fullWidth
             className="bg-primary text-white font-semibold"
+            isLoading={isPending}
             radius="sm"
             size="lg"
             type="submit"
           >
-            Sign In
+            {isPending ? "Submitting..." : "Sign In"}
           </Button>
         </div>
       </Form>
