@@ -15,11 +15,15 @@ import { useNavigate } from "react-router-dom";
 
 import { sidebarRoutes } from "@/routes";
 import LogoutModal from "@/components/general/logout_modal";
+import { useGetUser } from "@/pages/profile/hooks/use_get_admin";
+import { getUserRole } from "@/utils/helper";
+import { UserRole } from "@/pages/profile/types/profile.type";
 
 export default function UserProfileDropdown() {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const logoutModal = useDisclosure();
   const navigate = useNavigate();
+  const { user } = useGetUser();
 
   const getProfileMenu = () => {
     return [
@@ -52,7 +56,7 @@ export default function UserProfileDropdown() {
           >
             <User
               avatarProps={{
-                src: "https://avatars.githubusercontent.com/u/30373425?v=4",
+                src: user?.avatar,
                 showFallback: true,
               }}
               className="transition-transform hidden md:flex gap-3"
@@ -60,13 +64,13 @@ export default function UserProfileDropdown() {
                 name: "font-medium text-black",
                 description: "font-rubik text-secondary-100",
               }}
-              description="Agent"
-              name="Praiz Chuks"
+              description={getUserRole(user?.role as UserRole)}
+              name={`${user?.firstName} ${user?.lastName}`}
             />
             <Avatar
               showFallback
               className="transition-transform block md:hidden"
-              src=""
+              src={user?.avatar}
             />
             <div
               className={`hidden md:block group-hover:visible ${isOpen ? "visible" : "invisible"}`}

@@ -1,105 +1,89 @@
 import { Button, Input } from "@heroui/react";
 import { MdEmail } from "react-icons/md";
+import { formatDistanceToNow } from "date-fns";
+
+import { useGetUser } from "../hooks/use_get_admin";
 
 export default function GeneralInformation() {
+  const { user } = useGetUser();
+
+  let relativeTime = "";
+  const dateStr = user?.updatedAt;
+
+  if (dateStr) {
+    const dateObj = new Date(dateStr);
+
+    if (!isNaN(dateObj.getTime())) {
+      relativeTime = formatDistanceToNow(dateObj, { addSuffix: true });
+    }
+  }
+
   return (
     <div className="space-y-8">
-      <form className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 xl:gap-4">
-        <div className="space-y-2">
-          <label
-            className="block text-sm font-medium text-gray-700"
-            htmlFor="first-name"
-          >
-            Full Name
-          </label>
-          <Input
-            className="w-full focus:outline-none focus:ring-2 focus:ring-primary"
-            id="first-name"
-            placeholder="Your First Name"
-            radius="sm"
-            type="text"
-          />
-        </div>
+      <form className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 xl:gap-4">
+        <Input
+          isDisabled
+          className="w-full focus:outline-none focus:ring-2 focus:ring-primary"
+          classNames={{
+            inputWrapper: "h-12",
+            label: "text-sm font-medium text-gray-400 pb-1",
+          }}
+          id="first-name"
+          label="First Name"
+          labelPlacement="outside"
+          placeholder="Enter your first name"
+          radius="sm"
+          type="text"
+          value={user?.firstName || ""}
+        />
 
-        <div className="space-y-2">
-          <label
-            className="block text-sm font-medium text-gray-700"
-            htmlFor="nick-name"
-          >
-            Nick Name
-          </label>
-          <Input
-            className="w-full focus:outline-none focus:ring-2 focus:ring-primary"
-            id="nick-name"
-            placeholder="Your Nick Name"
-            radius="sm"
-            type="text"
-          />
-        </div>
+        <Input
+          isDisabled
+          className="w-full focus:outline-none focus:ring-2 focus:ring-primary"
+          classNames={{
+            inputWrapper: "h-12",
+            label: "text-sm font-medium text-gray-400 pb-1",
+          }}
+          id="last-name"
+          label="Last Name"
+          labelPlacement="outside"
+          placeholder="Enter your last name"
+          radius="sm"
+          type="text"
+          value={user?.lastName || ""}
+        />
 
-        <div className="space-y-2">
-          <label
-            className="block text-sm font-medium text-gray-700"
-            htmlFor="gender"
-          >
-            Gender
-          </label>
-          <Input
-            className="w-full focus:outline-none focus:ring-2 focus:ring-primary"
-            id="gender"
-            placeholder="Your Gender"
-            radius="sm"
-            type="text"
-          />
-        </div>
+        <Input
+          isDisabled
+          className="w-full focus:outline-none focus:ring-2 focus:ring-primary"
+          classNames={{
+            inputWrapper: "h-12",
+            label: "text-sm font-medium text-gray-400 pb-1",
+          }}
+          id="email"
+          label="Email"
+          labelPlacement="outside"
+          placeholder="Enter your email"
+          radius="sm"
+          type="text"
+          value={user?.email || ""}
+        />
 
-        <div className="space-y-2">
-          <label
-            className="block text-sm font-medium text-gray-700"
-            htmlFor="country"
-          >
-            Country
-          </label>
-          <Input
-            className="w-full focus:outline-none focus:ring-2 focus:ring-primary"
-            id="country"
-            placeholder="Your Country"
-            radius="sm"
-            type="text"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <label
-            className="block text-sm font-medium text-gray-700"
-            htmlFor="language"
-          >
-            Language
-          </label>
-          <Input
-            className="w-full focus:outline-none focus:ring-2 focus:ring-primary"
-            id="language"
-            placeholder="Your Language"
-            radius="sm"
-            type="text"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <label
-            className="block text-sm font-medium text-gray-700"
-            htmlFor="time-zone"
-          >
-            Time Zone
-          </label>
-          <Input
-            className="w-full focus:outline-none focus:ring-2 focus:ring-primary"
-            id="time-zone"
-            placeholder="GMT +1"
-            radius="sm"
-            type="text"
-          />
-        </div>
+        <Input
+          isDisabled
+          className="w-full focus:outline-none focus:ring-2 focus:ring-primary"
+          classNames={{
+            inputWrapper: "h-12",
+            label: "text-sm font-medium text-gray-400 pb-1",
+          }}
+          id="phone"
+          label="Phone"
+          labelPlacement="outside"
+          placeholder="Enter your phone number"
+          radius="sm"
+          type="text"
+          value={user?.phone || ""}
+        />
       </form>
 
       <div className="space-y-4">
@@ -109,8 +93,8 @@ export default function GeneralInformation() {
             <MdEmail className="text-xl text-primary" />
           </div>
           <div className="space-y-0.5 text-sm">
-            <p>alexarawles@gmail.com</p>
-            <p className="font-light text-gray-500">1 month ago</p>
+            <p>{user?.email || ""}</p>
+            <p className="font-light text-gray-500">{relativeTime}</p>
           </div>
         </div>
 

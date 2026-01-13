@@ -1,63 +1,120 @@
 import { Input } from "@heroui/input";
-import { Button, Switch } from "@heroui/react";
+import { addToast, Button } from "@heroui/react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useMutation } from "@tanstack/react-query";
 
 import RecentDeviceLogin from "./recent_device_login";
 
+import { changePasswordApi } from "@/pages/authentication/api/auth.api";
+import { ChangePasswordSchema } from "@/pages/authentication/schema/auth.schema";
+
 export default function SecuritySettings() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<ChangePasswordSchema>({
+    resolver: yupResolver(ChangePasswordSchema),
+  });
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: changePasswordApi,
+    onSuccess: () => {
+      reset();
+      addToast({
+        title: "Success",
+        description: "Password changed successfully",
+        color: "success",
+      });
+    },
+    onError: (errorMessage: string) =>
+      addToast({
+        title: "Error",
+        description: errorMessage || "Failed to change password",
+        color: "danger",
+      }),
+  });
+
+  const onSubmit: SubmitHandler<ChangePasswordSchema> = (data) => {
+    const payload = {
+      currentPassword: data.currentPassword,
+      newPassword: data.newPassword,
+    };
+
+    mutate(payload);
+  };
+
   return (
     <div className="space-y-8">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-        <form className="space-y-5">
-          {/* Current password */}
-          <div className="space-y-2">
-            <label
-              className="block text-sm font-medium text-gray-700"
-              htmlFor="current-password"
-            >
-              Current Password
-            </label>
+        <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+          <div className="space-y-11">
+            {/* Current password */}
             <Input
+              {...register("currentPassword")}
               className="w-full focus:outline-none focus:ring-2 focus:ring-primary"
+              classNames={{
+                inputWrapper: "h-12",
+                label: "text-sm font-medium text-gray-400 pb-1",
+              }}
+              errorMessage={errors.currentPassword?.message}
               id="current-password"
+              isInvalid={!!errors.currentPassword}
+              label="Current Password"
+              labelPlacement="outside"
               placeholder="Enter current password"
               radius="sm"
-              type="password"
+              type="text"
             />
-          </div>
 
-          {/* New password */}
-          <div className="space-y-2">
-            <label
-              className="block text-sm font-medium text-gray-700"
-              htmlFor="new-password"
-            >
-              New Password
-            </label>
+            {/* New password */}
             <Input
+              {...register("newPassword")}
               className="w-full focus:outline-none focus:ring-2 focus:ring-primary"
+              classNames={{
+                inputWrapper: "h-12",
+                label: "text-sm font-medium text-gray-400 pb-1",
+              }}
+              errorMessage={errors.newPassword?.message}
               id="new-password"
-              placeholder="Enter new password"
+              isInvalid={!!errors.newPassword}
+              label="New Password"
+              labelPlacement="outside"
+              placeholder="New Password"
               radius="sm"
-              type="password"
+              type="text"
+            />
+
+            {/* Confirm password */}
+            <Input
+              {...register("confirmPassword")}
+              className="w-full focus:outline-none focus:ring-2 focus:ring-primary"
+              classNames={{
+                inputWrapper: "h-12",
+                label: "text-sm font-medium text-gray-400 pb-1",
+              }}
+              errorMessage={errors.confirmPassword?.message}
+              id="confirm-password"
+              isInvalid={!!errors.confirmPassword}
+              label="Confirm Password"
+              labelPlacement="outside"
+              placeholder="Confirm Password"
+              radius="sm"
+              type="text"
             />
           </div>
 
-          {/* Confirm password */}
-          <div className="space-y-2">
-            <label
-              className="block text-sm font-medium text-gray-700"
-              htmlFor="confirm-password"
-            >
-              Confirm Password
-            </label>
-            <Input
-              className="w-full focus:outline-none focus:ring-2 focus:ring-primary"
-              id="confirm-password"
-              placeholder="Confirm new password"
-              radius="sm"
-              type="password"
-            />
-          </div>
+          <Button
+            className="px-8"
+            color="primary"
+            isLoading={isPending}
+            radius="sm"
+            type="submit"
+          >
+            {isPending ? "Updating..." : "Update"}
+          </Button>
         </form>
 
         {/* List of devices */}
@@ -68,18 +125,6 @@ export default function SecuritySettings() {
             <RecentDeviceLogin />
           </div>
         </div>
-      </div>
-
-      <div className="space-y-5">
-        <div className="flex items-center gap-3">
-          <Switch defaultChecked size="sm" />
-          <p className="text-xs font-light text-gray-500">
-            2-FACTOR AUTHENTICATION
-          </p>
-        </div>
-        <Button color="primary" radius="sm">
-          Logout all devices
-        </Button>
       </div>
     </div>
   );

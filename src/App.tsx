@@ -18,7 +18,7 @@ import LeadsPage from "@/pages/leads";
 import BookingsPage from "@/pages/bookings";
 import NotificationsPage from "@/pages/notifications";
 import ClientDetailsPage from "@/pages/clients/components/client_details_page";
-import ProfilePage from "@/pages/profile";
+import ProfilePage from "@/pages/profile/profile.page";
 
 function App() {
   return (

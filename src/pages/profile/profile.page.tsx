@@ -4,7 +4,8 @@ import { useSearchParams } from "react-router-dom";
 import GeneralInformation from "./components/general_information";
 import SecuritySettings from "./components/security_settings";
 import NotificationSettings from "./components/notification_settings";
-import { PROFILE_TABS } from "./profile.type";
+import { PROFILE_TABS } from "./types/profile.type";
+import { useGetUser } from "./hooks/use_get_admin";
 
 const profileTabs = [
   PROFILE_TABS.GeneralInformation,
@@ -13,6 +14,7 @@ const profileTabs = [
 ];
 
 export default function ProfilePage() {
+  const { user } = useGetUser();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const activeTab = searchParams.get("tab") || PROFILE_TABS.GeneralInformation;
@@ -35,15 +37,15 @@ export default function ProfilePage() {
 
       <User
         avatarProps={{
-          src: "https://avatars.githubusercontent.com/u/30373425?v=4",
+          src: user?.avatar,
           className: "w-24 h-24",
         }}
         classNames={{
           name: "text-lg font-medium",
           description: "text-gray-400 text-sm font-normal",
         }}
-        description="alexarawles@gmail.com"
-        name="Praise Madumere"
+        description={user?.email}
+        name={`${user?.firstName} ${user?.lastName}`}
       />
 
       {activeTab === PROFILE_TABS.GeneralInformation && <GeneralInformation />}
