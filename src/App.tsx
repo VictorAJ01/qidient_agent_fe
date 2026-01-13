@@ -3,9 +3,10 @@ import { Route, Routes } from "react-router-dom";
 import { authRoutes, sidebarRoutes } from "@/routes";
 import AuthLayout from "@/layouts/auth.layout";
 import SigninPage from "@/pages/authentication/signin.page";
-import VerifyOtpPage from "@/pages/authentication/verify_otp.page";
-import OtpSuccessfulVerificationPage from "@/pages/authentication/otp_verified.page";
+import VerifySignupOtpPage from "@/pages/authentication/verify_signup_otp.page";
+import VerifyResetPasswordOtpPage from "@/pages/authentication/verify_reset_password_otp.page";
 import ResetPasswordPage from "@/pages/authentication/reset_password.page";
+import ResetPasswordRequestPage from "@/pages/authentication/reset_password_request.page";
 import LeadsInquiriesPage from "@/pages/leads/leads_inquiries";
 import DashboardLayout from "@/layouts/dashboard.layout";
 import SignupPage from "@/pages/authentication/signup.page";
@@ -26,13 +27,20 @@ function App() {
         <Route element={<SigninPage />} path={authRoutes.login} />
         <Route element={<SignupPage />} path={authRoutes.signup} />
         <Route
+          element={<ResetPasswordRequestPage />}
+          path={authRoutes.resetPasswordRequest}
+        />
+        <Route
           element={<ResetPasswordPage />}
           path={authRoutes.resetPassword}
         />
-        <Route element={<VerifyOtpPage />} path={authRoutes.verifyOTP} />
         <Route
-          element={<OtpSuccessfulVerificationPage />}
-          path={authRoutes.otpSuccess}
+          element={<VerifySignupOtpPage />}
+          path={authRoutes.verifySignupOTP}
+        />
+        <Route
+          element={<VerifyResetPasswordOtpPage />}
+          path={authRoutes.verifyResetPasswordOTP}
         />
       </Route>
 

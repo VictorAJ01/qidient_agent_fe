@@ -48,7 +48,7 @@ export default function SignupPage() {
         description: "Verify otp",
         color: "success",
       });
-      navigate(authRoutes.verifyOTP);
+      navigate(authRoutes.verifySignupOTP);
     },
     onError: (error: string) => {
       addToast({

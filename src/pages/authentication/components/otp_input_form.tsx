@@ -2,17 +2,17 @@ import { addToast, Button, Form } from "@heroui/react";
 import { InputOtp } from "@heroui/input-otp";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 
-import { VerifyOtpSchema } from "./schema/auth.schema";
-import { verifyOtpApi } from "./api/auth.api";
+import { VerifyOtpSchema } from "../schema/auth.schema";
+import { OtpResponsePayload } from "../types/auth.type";
+import { verifyOtpApi } from "../api/auth.api";
 
-import { authRoutes } from "@/routes";
-import { setCredentials } from "@/common";
+export type OtpInputFormProps = {
+  onSuccess: (data: OtpResponsePayload) => void;
+};
 
-export default function VerifyOtpPage() {
-  const navigate = useNavigate();
+export default function OtpInputForm({ onSuccess }: OtpInputFormProps) {
   const {
     control,
     handleSubmit,
@@ -24,17 +24,18 @@ export default function VerifyOtpPage() {
   const { mutate, isPending } = useMutation({
     mutationFn: verifyOtpApi,
     onSuccess: (data) => {
-      setCredentials(data.accessToken, data.user._id);
       addToast({
         title: "Otp verification successful",
         color: "success",
       });
-      navigate(authRoutes.otpSuccess);
+      onSuccess(data);
     },
-    onError: (error: string) => {
+    onError: (error: string | Error) => {
+      const errorMessage = typeof error === "string" ? error : error.message;
+
       addToast({
         title: "Otp verification failed",
-        description: error,
+        description: errorMessage || "Otp verification failed",
         color: "danger",
       });
     },

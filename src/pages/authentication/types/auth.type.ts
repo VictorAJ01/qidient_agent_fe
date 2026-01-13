@@ -66,3 +66,19 @@ export type ResetPasswordPayload = {
   email: string;
   newPassword: string;
 };
+
+export type ResetPasswordResponsePayload = {
+  isError: boolean;
+  message: string;
+  description: string;
+  payload: null;
+};
+
+export type RequestResetPasswordPayload = {
+  email: string;
+};
+
+export type ChangePasswordPayload = {
+  currentPassword: string;
+  newPassword: string;
+};

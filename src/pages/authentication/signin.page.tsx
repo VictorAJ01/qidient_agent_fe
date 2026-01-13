@@ -120,7 +120,7 @@ export default function SigninPage() {
         <div className="flex justify-end w-full">
           <Link
             className="text-sm font-semibold cursor-pointer"
-            href={authRoutes.resetPassword}
+            href={authRoutes.resetPasswordRequest}
           >
             Forgot Password?
           </Link>

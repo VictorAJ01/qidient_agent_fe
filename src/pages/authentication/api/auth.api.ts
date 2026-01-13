@@ -1,11 +1,15 @@
 import {
   LoginPayload,
   LoginResponsePayload,
-  OtpPayload,
-  OtpResponsePayload,
   SignupPayload,
   SignupResponsePayload,
-} from "../auth.type";
+  OtpPayload,
+  OtpResponsePayload,
+  RequestResetPasswordPayload,
+  ResetPasswordPayload,
+  ResetPasswordResponsePayload,
+  ChangePasswordPayload,
+} from "../types/auth.type";
 
 import { Api } from "@/api";
 
@@ -36,4 +40,40 @@ const verifyOtpApi = async (payload: OtpPayload) => {
   return response;
 };
 
-export { loginApi, signupApi, verifyOtpApi };
+const requestResetPasswordApi = async (
+  payload: RequestResetPasswordPayload,
+) => {
+  const response = await Api.post<SignupResponsePayload, SignupResponsePayload>(
+    "/v1/auth/reset-password/request",
+    payload,
+  );
+
+  return response;
+};
+
+const resetPasswordApi = async (payload: ResetPasswordPayload) => {
+  const response = await Api.patch<
+    ResetPasswordResponsePayload,
+    ResetPasswordResponsePayload
+  >("/v1/auth/reset-password", payload);
+
+  return response;
+};
+
+const changePasswordApi = async (payload: ChangePasswordPayload) => {
+  const response = await Api.patch<LoginResponsePayload, LoginResponsePayload>(
+    "/v1/auth/change-password",
+    payload,
+  );
+
+  return response;
+};
+
+export {
+  loginApi,
+  signupApi,
+  verifyOtpApi,
+  requestResetPasswordApi,
+  resetPasswordApi,
+  changePasswordApi,
+};
