@@ -11,7 +11,6 @@ import {
   TableRow,
 } from "@heroui/react";
 import { FiSearch } from "react-icons/fi";
-import { AiOutlineUserAdd } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 
 import UserStatusBadge from "@/components/general/user_status";
@@ -150,15 +149,6 @@ export default function AllClientsTable() {
             ))}
           </Select>
         </div>
-
-        <Button
-          className="py-5"
-          color="primary"
-          radius="sm"
-          startContent={<AiOutlineUserAdd className="text-lg" />}
-        >
-          Add new client
-        </Button>
       </div>
 
       <div className="p-4 bg-white rounded-xl">

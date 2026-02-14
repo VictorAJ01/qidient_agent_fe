@@ -13,7 +13,7 @@ import SignupPage from "@/pages/authentication/signup.page";
 import OverviewPage from "@/pages/overview";
 import ListingsPage from "@/pages/listings";
 import ListingDetailsPage from "@/pages/listings/components/listing_details_page";
-import ClientsPage from "@/pages/clients";
+import ClientsPage from "@/pages/clients/clients.page";
 import LeadsPage from "@/pages/leads";
 import BookingsPage from "@/pages/bookings";
 import NotificationsPage from "@/pages/notifications";
