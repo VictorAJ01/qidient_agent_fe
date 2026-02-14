@@ -19,10 +19,6 @@ const clientsStatCardData = [
     title: "Inactive Clients",
     figure: 1,
   },
-  {
-    title: "Blocked Clients",
-    figure: 1,
-  },
 ];
 
 export default function ClientsPage() {
