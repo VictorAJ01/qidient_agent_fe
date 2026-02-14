@@ -14,10 +14,10 @@ import OverviewPage from "@/pages/overview";
 import ListingsPage from "@/pages/listings";
 import ListingDetailsPage from "@/pages/listings/components/listing_details_page";
 import ClientsPage from "@/pages/clients/clients.page";
+import ClientDetailsPage from "@/pages/clients/client_details.page";
 import LeadsPage from "@/pages/leads";
 import BookingsPage from "@/pages/bookings";
 import NotificationsPage from "@/pages/notifications";
-import ClientDetailsPage from "@/pages/clients/components/client_details_page";
 import ProfilePage from "@/pages/profile/profile.page";
 
 function App() {

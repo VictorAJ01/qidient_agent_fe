@@ -13,7 +13,7 @@ import { GoUnlock } from "react-icons/go";
 import { LuFileUp } from "react-icons/lu";
 import { BiSolidFolderOpen } from "react-icons/bi";
 
-import RecentActivityCard from "./recent_activity_card";
+import RecentActivityCard from "./components/recent_activity_card";
 
 import UserDetailsCard from "@/components/general/user_details_card";
 

@@ -1,15 +1,27 @@
-import { GetClientsStatsResponsePayload } from "../types/clients.type";
+import {
+  GetClientsRequestQueryParams,
+  GetClientsResponsePayload,
+  GetClientsStatsResponsePayload,
+} from "../types/clients.type";
 
 import { Api } from "@/api";
 
-const getClientsStatsApi =
-  async (): Promise<GetClientsStatsResponsePayload> => {
-    const response = await Api.get<
-      GetClientsStatsResponsePayload,
-      GetClientsStatsResponsePayload
-    >("/v1/clients/stats");
+const getClientsStatsApi = async () => {
+  const response = await Api.get<
+    GetClientsStatsResponsePayload,
+    GetClientsStatsResponsePayload
+  >("/v1/clients/stats");
 
-    return response;
-  };
+  return response;
+};
 
-export { getClientsStatsApi };
+const getClientsApi = async (params: GetClientsRequestQueryParams) => {
+  const response = await Api.get<
+    GetClientsResponsePayload,
+    GetClientsResponsePayload
+  >("/v1/clients", { params });
+
+  return response;
+};
+
+export { getClientsApi, getClientsStatsApi };

@@ -4,4 +4,5 @@ export const queryKeys = {
 
   // clients
   clientsStats: "clientsStats",
+  clients: "clients",
 };
