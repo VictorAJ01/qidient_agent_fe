@@ -6,28 +6,28 @@ import { getClientsStatsApi } from "./api/clients.api";
 import StatsCard from "@/components/general/stats_card";
 import { queryKeys } from "@/utils/keys";
 
-const clientsStatCardData = [
-  {
-    title: "Total Clients",
-    figure: 14,
-  },
-  {
-    title: "Active Clients",
-    figure: 12,
-  },
-  {
-    title: "Inactive Clients",
-    figure: 1,
-  },
-];
-
 export default function ClientsPage() {
   const { data: clientsStats } = useQuery({
     queryKey: [queryKeys.clientsStats],
     queryFn: getClientsStatsApi,
   });
 
-  console.log(clientsStats);
+  const { totalClients, activeClients, inactiveClients } = clientsStats || {};
+
+  const clientsStatCardData = [
+    {
+      title: "Total Clients",
+      figure: totalClients || 0,
+    },
+    {
+      title: "Active Clients",
+      figure: activeClients || 0,
+    },
+    {
+      title: "Inactive Clients",
+      figure: inactiveClients || 0,
+    },
+  ];
 
   return (
     <div className="space-y-6">

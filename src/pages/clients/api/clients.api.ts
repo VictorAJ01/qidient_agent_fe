@@ -1,9 +1,15 @@
+import { GetClientsStatsResponsePayload } from "../types/clients.type";
+
 import { Api } from "@/api";
 
-const getClientsStatsApi = async () => {
-  const response = await Api.get("/v1/clients/stats");
+const getClientsStatsApi =
+  async (): Promise<GetClientsStatsResponsePayload> => {
+    const response = await Api.get<
+      GetClientsStatsResponsePayload,
+      GetClientsStatsResponsePayload
+    >("/v1/clients/stats");
 
-  return response;
-};
+    return response;
+  };
 
 export { getClientsStatsApi };
