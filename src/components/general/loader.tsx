@@ -6,7 +6,7 @@ type LoaderProps = {
 
 export default function Loader({ message }: LoaderProps) {
   return (
-    <div className="flex flex-col flex-grow items-center justify-center gap-3 font-medium text-system-gray-dark-300">
+    <div className="flex flex-col flex-grow items-center justify-center gap-4 font-medium text-system-gray-dark-300">
       <Spinner color="primary" size="lg" />
       <p>{message}</p>
     </div>

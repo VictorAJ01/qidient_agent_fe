@@ -21,7 +21,7 @@ const getPropertiesApi = async (
   params: GetPropertiesQueryParams,
 ): Promise<GetPropertiesResponse> => {
   const response = await Api.get<GetPropertiesResponse, GetPropertiesResponse>(
-    "/v1/properties",
+    "/v1/properties/my",
     { params },
   );
 
