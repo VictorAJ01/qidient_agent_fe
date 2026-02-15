@@ -37,3 +37,7 @@ export type GetClientsResponsePayload = {
   clients: Client[];
   meta: PaginationMeta;
 };
+
+export type GetClientRequestQueryParams = {
+  id: string;
+};

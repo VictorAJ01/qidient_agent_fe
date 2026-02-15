@@ -1,4 +1,6 @@
 import {
+  Client,
+  GetClientRequestQueryParams,
   GetClientsRequestQueryParams,
   GetClientsResponsePayload,
   GetClientsStatsResponsePayload,
@@ -24,4 +26,10 @@ const getClientsApi = async (params: GetClientsRequestQueryParams) => {
   return response;
 };
 
-export { getClientsApi, getClientsStatsApi };
+const getClientApi = async (params: GetClientRequestQueryParams) => {
+  const response = await Api.get<Client, Client>(`/v1/clients/${params.id}`);
+
+  return response;
+};
+
+export { getClientApi, getClientsApi, getClientsStatsApi };

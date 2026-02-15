@@ -5,20 +5,52 @@ import {
   CardBody,
   CardHeader,
   Divider,
+  addToast,
 } from "@heroui/react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { FaCircleNotch } from "react-icons/fa";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { GoUnlock } from "react-icons/go";
 import { LuFileUp } from "react-icons/lu";
+import { useQuery } from "@tanstack/react-query";
 import { BiSolidFolderOpen } from "react-icons/bi";
+import { formatDate } from "date-fns";
 
 import RecentActivityCard from "./components/recent_activity_card";
+import { getClientApi } from "./api/clients.api";
 
 import UserDetailsCard from "@/components/general/user_details_card";
+import { queryKeys } from "@/utils/keys";
+import Loader from "@/components/general/loader";
+import { sidebarRoutes } from "@/routes";
 
 export default function ClientDetailsPage() {
   const { id } = useParams();
+  const navigate = useNavigate();
+
+  const {
+    data: client,
+    isPending,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: [queryKeys.client, id],
+    queryFn: () => getClientApi({ id: id as string }),
+  });
+
+  if (isPending) return <Loader message="Fetching client details..." />;
+
+  if (isError) {
+    addToast({
+      title: "Error",
+      description:
+        String(error) || "An error occurred while fetching client details",
+      color: "danger",
+    });
+    navigate(sidebarRoutes.clients, { replace: true });
+
+    return;
+  }
 
   return (
     <div className="min-h-screen">
@@ -26,7 +58,7 @@ export default function ClientDetailsPage() {
         <div className="px-4 lg:px-7 py-4 lg:py-6 bg-white rounded-lg space-y-4">
           <div className="flex flex-wrap lg:flex-nowrap gap-4 lg:gap-7 w-full">
             <div>
-              <Avatar alt="John Doe" className="w-24 h-24" src="" />
+              <Avatar alt={client?.user} className="w-24 h-24" src="" />
             </div>
 
             <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7 gap-4 lg:gap-6">
@@ -35,10 +67,13 @@ export default function ClientDetailsPage() {
               <UserDetailsCard title="Number:" value="(234) 123-7667" />
               <UserDetailsCard title="Email:" value="parish.yet@gmail.com" />
               <UserDetailsCard title="Address:" value="123 House Street" />
-              <UserDetailsCard title="Joined:" value="2025-08-04" />
-              <UserDetailsCard title="Account Status" value="Active" />
+              <UserDetailsCard
+                title="Joined:"
+                value={formatDate(client?.createdAt, "dd-MM-yyyy")}
+              />
+              <UserDetailsCard title="Account Status" value={client?.status} />
               <UserDetailsCard title="Verification Status" value="Verified" />
-              <UserDetailsCard title="Client Type" value="Buyer" />
+              <UserDetailsCard title="Client Type" value={client?.clientType} />
               <UserDetailsCard title="Agency" value="Prime Properties" />
               <UserDetailsCard title="Account Type" value="Professional" />
             </div>
