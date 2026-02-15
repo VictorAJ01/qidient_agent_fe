@@ -11,30 +11,14 @@ import { Link as RouterLink } from "react-router-dom";
 
 import UserStatusBadge from "@/components/general/user_status";
 import { sidebarRoutes } from "@/routes";
+import { Client } from "@/pages/clients/types/clients.type";
 
-const dummyClients = [
-  {
-    id: "29285dh",
-    name: "Emeka Paul",
-    clientType: "Tenant",
-    status: "Active",
-  },
-  {
-    id: "29285dh",
-    name: "Emeka Paul",
-    clientType: "Tenant",
-    status: "Active",
-  },
-  {
-    id: "29285dh",
-    name: "Emeka Paul",
-    clientType: "Tenant",
-    status: "Active",
-  },
-];
+type ClientsOverviewProps = {
+  clients: Client[];
+};
 
-export default function ClientsOverview() {
-  const listingsToShow = dummyClients.slice(0, 3);
+export default function ClientsOverview({ clients }: ClientsOverviewProps) {
+  const truncatedClients = clients.slice(0, 3);
 
   return (
     <div className="w-full py-4 bg-white rounded-xl overflow-auto">
@@ -67,8 +51,8 @@ export default function ClientsOverview() {
         </TableHeader>
 
         <TableBody>
-          {listingsToShow.map((listing, index) => {
-            const lastIndex = listingsToShow.length - 1;
+          {truncatedClients.map((client, index) => {
+            const lastIndex = truncatedClients.length - 1;
 
             return (
               <TableRow
@@ -78,16 +62,16 @@ export default function ClientsOverview() {
                 <TableCell>
                   <div className="text-xs">
                     <h3 className="text-sm text-black max-w-28 text-ellipsis text-nowrap overflow-hidden">
-                      {listing.name}
+                      {client.user}
                     </h3>
-                    <p>#{listing.id}</p>
+                    <p>#{client._id.slice(0, 6).toUpperCase()}</p>
                   </div>
                 </TableCell>
 
-                <TableCell>{listing.clientType}</TableCell>
+                <TableCell>{client.clientType}</TableCell>
 
                 <TableCell>
-                  <UserStatusBadge status={listing.status} />
+                  <UserStatusBadge status={client.status} />
                 </TableCell>
               </TableRow>
             );

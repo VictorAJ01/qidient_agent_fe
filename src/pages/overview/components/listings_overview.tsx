@@ -11,30 +11,14 @@ import { Link as RouterLink } from "react-router-dom";
 
 import { sidebarRoutes } from "@/routes";
 import UserStatusBadge from "@/components/general/user_status";
+import { Property } from "@/pages/listings/types/listings.type";
 
-const dummyListings = [
-  {
-    id: "29285dh",
-    title: "4 Bedroom Terrace Duplex",
-    location: "Jabi, Abuja",
-    status: "Active",
-  },
-  {
-    id: "29285dh",
-    title: "4 Bedroom Terrace Duplex",
-    location: "Jabi, Abuja",
-    status: "Active",
-  },
-  {
-    id: "29285dh",
-    title: "4 Bedroom Terrace Duplex",
-    location: "Jabi, Abuja",
-    status: "Active",
-  },
-];
+type ListingsOverviewProps = {
+  listings: Property[];
+};
 
-export default function ListingsOverview() {
-  const listingsToShow = dummyListings.slice(0, 3);
+export default function ListingsOverview({ listings }: ListingsOverviewProps) {
+  const truncatedListings = listings.slice(0, 3);
 
   return (
     <div className="w-full py-4 bg-white rounded-xl overflow-auto">
@@ -67,8 +51,8 @@ export default function ListingsOverview() {
         </TableHeader>
 
         <TableBody>
-          {listingsToShow.map((listing, index) => {
-            const lastIndex = listingsToShow.length - 1;
+          {truncatedListings.map((listing, index) => {
+            const lastIndex = truncatedListings.length - 1;
 
             return (
               <TableRow
@@ -80,11 +64,15 @@ export default function ListingsOverview() {
                     <h3 className="text-sm text-black max-w-28 text-ellipsis text-nowrap overflow-hidden">
                       {listing.title}
                     </h3>
-                    <p>#{listing.id}</p>
+                    <p className="text-xs text-gray-500 line-clamp-1 text-ellipsis text-nowrap overflow-hidden max-w-28">
+                      {listing.description}
+                    </p>
                   </div>
                 </TableCell>
 
-                <TableCell>{listing.location}</TableCell>
+                <TableCell>
+                  {listing.city}, {listing.country}
+                </TableCell>
 
                 <TableCell>
                   <UserStatusBadge status={listing.status} />
