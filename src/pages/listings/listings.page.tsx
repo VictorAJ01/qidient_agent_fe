@@ -1,102 +1,128 @@
-import { Select, SelectItem, Input, Button } from "@heroui/react";
-import { FiSearch } from "react-icons/fi";
+import { Select, SelectItem, Input, Button, Pagination } from "@heroui/react";
+import { FiSearch, FiHome } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { IoAddOutline } from "react-icons/io5";
+import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 import PropertyCard from "./components/property_card";
+import { GetPropertiesQueryParams } from "./types/listings.type";
+import { getPropertiesApi } from "./api/listings.api";
+import { statusOptions, typeOptions } from "./utils/data";
 
+import EmptyState from "@/components/general/empty_state";
+import Loader from "@/components/general/loader";
 import { sidebarRoutes } from "@/routes";
+import { useUrlPagination } from "@/hooks/use_url_pagination";
+import { queryKeys } from "@/utils/keys";
+import { useDebounce } from "@/hooks/use_debounce";
 
-const statuses = ["Active", "Inactive", "Pending"];
+function searchParamsToQueryParams(
+  searchParams: URLSearchParams,
+): GetPropertiesQueryParams {
+  const page = Number(searchParams.get("page")) || 1;
+  const limit = Number(searchParams.get("limit")) || 10;
+  const q = searchParams.get("q") || undefined;
+  const status = searchParams.get("status") || undefined;
+  const type = searchParams.get("type") || undefined;
+  const isRentalParam = searchParams.get("isRental");
 
-const properties = [
-  {
-    id: 1,
-    propertyImage:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
-    title: "Muoyo’s Place, Guzape",
-    description: "4 Bedroom Terrace Duplex, Jabi Abuja",
-    status: "active",
-    dateListed: "24-05-25",
-    listingType: "sale",
-  },
-  {
-    id: 2,
-    propertyImage:
-      "https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6",
-    title: "Emerald Heights, Lekki",
-    description: "3 Bedroom Apartment, Lekki Phase 1, Lagos",
-    status: "active",
-    dateListed: "18-05-25",
-    listingType: "rent",
-  },
-  {
-    id: 3,
-    propertyImage:
-      "https://images.unsplash.com/photo-1598928506311-c55ded91a20c",
-    title: "Sunset Villas, Asokoro",
-    description: "5 Bedroom Luxury Detached Duplex, Abuja",
-    status: "inactive",
-    dateListed: "12-05-25",
-    listingType: "sale",
-  },
-  {
-    id: 4,
-    propertyImage:
-      "https://images.unsplash.com/photo-1568605114967-8130f3a36994",
-    title: "Palm Court Residence",
-    description: "2 Bedroom Flat, Ikoyi Lagos",
-    status: "active",
-    dateListed: "30-04-25",
-    listingType: "rent",
-  },
-  {
-    id: 5,
-    propertyImage:
-      "https://images.unsplash.com/photo-1572120360610-d971b9d7767c",
-    title: "Greenfield Estate, Gwarinpa",
-    description: "4 Bedroom Semi-Detached Duplex, Abuja",
-    status: "active",
-    dateListed: "22-04-25",
-    listingType: "sale",
-  },
-  {
-    id: 6,
-    propertyImage:
-      "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d",
-    title: "Ocean View Apartments",
-    description: "1 Bedroom Shortlet Apartment, Victoria Island",
-    status: "inactive",
-    dateListed: "15-04-25",
-    listingType: "rent",
-  },
-  {
-    id: 7,
-    propertyImage:
-      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914",
-    title: "Royal Crest Homes, Wuye",
-    description: "3 Bedroom Terrace Duplex, Wuye Abuja",
-    status: "active",
-    dateListed: "08-04-25",
-    listingType: "sale",
-  },
-  {
-    id: 8,
-    propertyImage:
-      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3",
-    title: "Cityline Residences, Yaba",
-    description: "Studio Apartment, Yaba Lagos",
-    status: "active",
-    dateListed: "01-04-25",
-    listingType: "rent",
-  },
-];
+  const isRental =
+    isRentalParam === "true"
+      ? true
+      : isRentalParam === "false"
+        ? false
+        : undefined;
+
+  return { page, limit, q, status, type, isRental };
+}
+
+function queryParamsToSearchParams(
+  params: GetPropertiesQueryParams,
+): URLSearchParams {
+  const next = new URLSearchParams();
+
+  if (params.page && params.page > 1) next.set("page", String(params.page));
+  if (params.limit && params.limit !== 10) {
+    next.set("limit", String(params.limit));
+  }
+  if (params.q) next.set("q", params.q);
+  if (params.status) next.set("status", params.status);
+  if (params.type) next.set("type", params.type);
+  if (params.isRental === true) next.set("isRental", "true");
+  if (params.isRental === false) next.set("isRental", "false");
+
+  return next;
+}
 
 export default function ListingsPage() {
   const navigate = useNavigate();
+  const { searchParams, setSearchParams } = useUrlPagination();
+  const queryParams = searchParamsToQueryParams(searchParams);
 
-  const handleViewProperty = (id: string | number) =>
-    navigate(`${sidebarRoutes.listings}/${id}`);
+  const [searchTerm, setSearchTerm] = useState(
+    () => searchParams.get("q") ?? "",
+  );
+
+  const debouncedSearch = useDebounce(searchTerm, 400);
+
+  useEffect(() => {
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+
+      if (debouncedSearch) {
+        next.set("q", debouncedSearch);
+      } else {
+        next.delete("q");
+      }
+      next.delete("page");
+
+      return next;
+    });
+  }, [debouncedSearch, setSearchParams]);
+
+  const { data, isPending } = useQuery({
+    queryKey: [
+      queryKeys.listings,
+      { ...queryParams, q: debouncedSearch || undefined },
+    ],
+    queryFn: () =>
+      getPropertiesApi({ ...queryParams, q: debouncedSearch || undefined }),
+  });
+
+  const properties = (data && data?.properties) || [];
+  const paginationMeta = data && data?.meta;
+
+  const rowsPerPage = paginationMeta?.limit || 10;
+
+  const totalPages =
+    paginationMeta?.totalPages ??
+    (Math.ceil((properties?.length || 0) / rowsPerPage) || 1);
+
+  const updateFilters = (updates: Partial<GetPropertiesQueryParams>) => {
+    const next = queryParamsToSearchParams({
+      ...queryParams,
+      ...updates,
+      page: 1,
+      q: debouncedSearch || undefined,
+    });
+
+    setSearchParams(next);
+  };
+
+  const setPage = (page: number) => {
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+
+      next.set("page", String(page));
+
+      return next;
+    });
+  };
+
+  const handleViewListing = (propertyId: string) => {
+    navigate(sidebarRoutes.viewListing.replace(":id", propertyId));
+  };
 
   return (
     <div className="space-y-4">
@@ -105,36 +131,71 @@ export default function ListingsPage() {
           <Input
             className="w-full md:min-w-3xs xl:min-w-sm"
             endContent={<FiSearch className="text-gray-400 text-xl" />}
-            placeholder="Search by name, ID or email"
+            placeholder="Search by title, description or tags"
             radius="full"
+            value={searchTerm}
+            onValueChange={setSearchTerm}
           />
           <Select
-            className="lg:min-w-24 xl:min-w-28"
+            aria-label="Status"
+            className="lg:min-w-28 xl:min-w-36"
             color="primary"
-            defaultSelectedKeys={["active"]}
+            placeholder="Status"
             radius="sm"
+            selectedKeys={
+              queryParams.status ? new Set([queryParams.status]) : new Set()
+            }
+            onSelectionChange={(keys) => {
+              const key = Array.from(keys)[0] as string;
+
+              updateFilters({ status: key || undefined });
+            }}
           >
-            {statuses.map((status) => (
-              <SelectItem key={status.toLowerCase()}>{status}</SelectItem>
+            {statusOptions.map((status) => (
+              <SelectItem key={status.key}>{status.label}</SelectItem>
             ))}
           </Select>
           <Select
-            className="lg:min-w-24 xl:min-w-28"
-            defaultSelectedKeys={["duplex"]}
+            aria-label="Property type"
+            className="lg:min-w-28 xl:min-w-32"
+            placeholder="Type"
             radius="sm"
+            selectedKeys={
+              queryParams.type ? new Set([queryParams.type]) : new Set()
+            }
+            onSelectionChange={(keys) => {
+              const key = Array.from(keys)[0] as string;
+
+              updateFilters({ type: key || undefined });
+            }}
           >
-            {["Duplex", "Bungalow"].map((type) => (
-              <SelectItem key={type.toLowerCase()}>{type}</SelectItem>
+            {typeOptions.map((type) => (
+              <SelectItem key={type.key}>{type.label}</SelectItem>
             ))}
           </Select>
           <Select
-            className="lg:min-w-24 xl:min-w-28"
-            defaultSelectedKeys={["rent"]}
+            aria-label="Rent or sale"
+            className="lg:min-w-24 xl:min-w-32"
+            placeholder="Rent / Sale"
             radius="sm"
+            selectedKeys={
+              queryParams.isRental === true
+                ? new Set(["true"])
+                : queryParams.isRental === false
+                  ? new Set(["false"])
+                  : new Set()
+            }
+            onSelectionChange={(keys) => {
+              const key = Array.from(keys)[0] as string;
+
+              updateFilters({
+                isRental:
+                  key === "true" ? true : key === "false" ? false : undefined,
+              });
+            }}
           >
-            {["Rent", "Lease", "Sale"].map((type) => (
-              <SelectItem key={type.toLowerCase()}>{type}</SelectItem>
-            ))}
+            <SelectItem key="true">Rent</SelectItem>
+            <SelectItem key="false">Sale</SelectItem>
           </Select>
         </div>
 
@@ -148,15 +209,44 @@ export default function ListingsPage() {
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-        {properties.map((property) => (
-          <PropertyCard
-            key={property.title}
-            {...property}
-            onPress={() => handleViewProperty(property.id)}
+      {isPending ? (
+        <div className="min-h-[280px] flex items-center justify-center">
+          <Loader message="Loading listings..." />
+        </div>
+      ) : properties.length === 0 ? (
+        <div className="min-h-[280px] flex items-center justify-center">
+          <EmptyState
+            icon={FiHome}
+            message="No listings found. Try adjusting your filters or search."
           />
-        ))}
-      </div>
+        </div>
+      ) : (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+            {properties.map((property) => (
+              <PropertyCard
+                key={property.id}
+                {...property}
+                onPress={() => handleViewListing(property.id)}
+              />
+            ))}
+          </div>
+
+          {totalPages > 1 && (
+            <div className="flex justify-center py-6">
+              <Pagination
+                showControls
+                classNames={{ wrapper: "gap-2" }}
+                page={queryParams.page || 1}
+                radius="sm"
+                siblings={2}
+                total={totalPages}
+                onChange={setPage}
+              />
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 }

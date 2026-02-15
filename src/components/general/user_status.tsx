@@ -49,6 +49,18 @@ const UserStatusBadge: React.FC<UserStatusProps> = ({
           label: "Suspended",
           dotColor: "bg-yellow-400",
         };
+      case "available":
+        return {
+          dotBorderColor: "border-green-400",
+          label: "Available",
+          dotColor: "bg-green-400",
+        };
+      case "unavailable":
+        return {
+          dotBorderColor: "border-gray-400",
+          label: "Unavailable",
+          dotColor: "bg-gray-400",
+        };
       default:
         return {
           dotBorderColor: "border-gray-400",
