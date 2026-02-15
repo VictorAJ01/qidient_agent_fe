@@ -31,7 +31,7 @@ export default function PropertyCard({
         />
 
         <Button
-          className="absolute z-10 top-4 right-4 bg-white/85 text-xs text-gray-700 font-medium px-6 py-2 flex items-center gap-2 shadow"
+          className="absolute z-10 top-4 right-4 bg-white/85 text-xs text-gray-700 font-medium px-4 py-2 flex items-center gap-2 shadow"
           endContent={<FaArrowRightLong />}
           radius="full"
           onPress={onPress}
