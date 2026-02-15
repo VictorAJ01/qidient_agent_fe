@@ -1,28 +1,67 @@
-import { Button } from "@heroui/react";
+import { Button, Chip } from "@heroui/react";
 import { FaRegStar } from "react-icons/fa";
 import { FiTrash2 } from "react-icons/fi";
 import { RiPencilLine } from "react-icons/ri";
 import { IoPersonCircleOutline } from "react-icons/io5";
+import { useState } from "react";
 import {
   PiHandPointing,
   PiPencilCircleLight,
   PiBookOpenUserLight,
-  PiBathtub,
 } from "react-icons/pi";
-import { TbAirConditioning } from "react-icons/tb";
-import { BsCupHot } from "react-icons/bs";
+import { TbTools } from "react-icons/tb";
+import { useQuery } from "@tanstack/react-query";
+import { useParams } from "react-router-dom";
 
 import PropertyStats from "./components/property_stats";
-import AmenitiesCard from "./components/amenities_card";
 import DocumentsCard from "./components/documents_card";
+import { getPropertyApi } from "./api/listings.api";
+import { PropertyImage } from "./types/listings.type";
+
+import { queryKeys } from "@/utils/keys";
+import Loader from "@/components/general/loader";
 
 export default function ListingDetailsPage() {
+  const { id } = useParams();
+  const propertyId = id as string;
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+
+  const { data: property, isLoading } = useQuery({
+    queryKey: [queryKeys.listing, propertyId],
+    queryFn: () => getPropertyApi({ id: propertyId }),
+  });
+
+  const propertyAmenities = (property?.amenities ?? [])
+    .map((item): { name: string; icon?: string } => {
+      if (typeof item === "object" && item !== null && "name" in item) {
+        const o = item as { name: string; icon?: string };
+
+        return { name: o.name, icon: o.icon };
+      }
+
+      return { name: String(item) };
+    })
+    .filter((a) => a.name.trim() !== "");
+
+  if (isLoading) {
+    return (
+      <div className="min-h-[280px] flex items-center justify-center">
+        <Loader message="Loading listing details..." />
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white p-4 lg:p-5 rounded-lg space-y-5">
-      <div className="flex flex-col gap-4 lg:gap-0 lg:flex-row lg:items-center lg:justify-between">
+      <div className="flex flex-col md:flex-row gap-4 lg:gap-6 xl:gap-8 flex-wrap xl:flex-nowrap justify-between items-start mb-4">
         <div>
-          <h3 className="font-semibold text-2xl">4 Bedroom Terrace Duplex</h3>
-          <p className="text-sm font-medium text-black2">Jabi Abuja</p>
+          <h1 className="text-xl font-semibold text-gray-900">
+            {property?.title}
+          </h1>
+          <p className="text-gray-500 text-sm">
+            {property?.address}, {property?.city}, {property?.state},{" "}
+            {property?.country}
+          </p>
         </div>
 
         <div className="flex items-center gap-3">
@@ -64,55 +103,89 @@ export default function ListingDetailsPage() {
       </div>
 
       <div className="w-full space-y-4">
-        {/* Main Image */}
-        <div className="w-full rounded-3xl overflow-hidden">
-          <img
-            alt="Property"
-            className="w-full h-[380px] md:h-[480px] object-cover"
-            src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80"
-          />
-        </div>
+        {/* Images: 1–10 images, main + thumbnails */}
+        {(() => {
+          const images: PropertyImage[] = property?.images ?? [];
+          const imageUrls = images.map((img) =>
+            typeof img === "string" ? img : img.url,
+          );
+          const count = imageUrls.length;
+          const mainUrl = imageUrls[selectedImageIndex] ?? imageUrls[0];
+          const hasThumbnails = count > 1;
 
-        {/* Side Images */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-          <img
-            alt="Interior"
-            className="rounded-2xl object-cover h-32 md:h-40 w-full"
-            src="https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6"
-          />
+          if (count === 0) {
+            return (
+              <div className="rounded-lg h-80 bg-gray-100 flex items-center justify-center text-gray-500 mb-6">
+                No images
+              </div>
+            );
+          }
 
-          <img
-            alt="Interior"
-            className="rounded-2xl object-cover h-32 md:h-40 w-full"
-            src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80"
-          />
-
-          {/* Last image with overlay */}
-          <div className="relative rounded-2xl overflow-hidden h-32 md:h-40">
-            <img
-              alt="More Photos"
-              className="object-cover w-full h-full"
-              src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c"
-            />
-            <div className="absolute inset-0 bg-black/40 flex items-center justify-center text-white font-medium text-lg">
-              +7 Photos
+          return (
+            <div
+              className={`grid gap-4 mb-6 ${hasThumbnails ? "grid-cols-1 md:grid-cols-4" : "grid-cols-1"}`}
+            >
+              <div className={hasThumbnails ? "md:col-span-3" : ""}>
+                <img
+                  alt={property?.title ?? "Property"}
+                  className="rounded-lg w-full h-80 object-cover"
+                  src={mainUrl}
+                />
+              </div>
+              {hasThumbnails && (
+                <div className="flex flex-row md:flex-col gap-2 md:gap-4 md:max-h-80 md:overflow-y-auto">
+                  {imageUrls.map((url, i) => (
+                    <button
+                      key={i}
+                      className={`rounded-lg h-20 md:h-24 w-full min-w-[5rem] md:min-w-0 flex-shrink-0 overflow-hidden border-2 transition ${
+                        selectedImageIndex === i
+                          ? "border-primary ring-2 ring-primary/30"
+                          : "border-transparent hover:border-gray-300"
+                      }`}
+                      type="button"
+                      onClick={() => setSelectedImageIndex(i)}
+                    >
+                      <img
+                        alt=""
+                        className="w-full h-full object-cover"
+                        src={url}
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
-          </div>
-        </div>
+          );
+        })()}
 
         <div className="flex flex-wrap gap-3">
-          <span className="px-4 py-1.5 bg-pink-200 text-pink-700 rounded-full text-sm">
-            Sale
-          </span>
-          <span className="px-4 py-1.5 bg-red-200 text-red-700 rounded-full text-sm">
-            Residential
-          </span>
-          <span className="px-4 py-1.5 bg-purple-200 text-purple-700 rounded-full text-sm">
-            3500sq
-          </span>
-          <span className="px-4 py-1.5 bg-green-200 text-green-700 rounded-full text-sm">
-            Duplex
-          </span>
+          <Chip
+            className="px-2 capitalize"
+            color="danger"
+            size="sm"
+            variant="flat"
+          >
+            {property?.isRental ? "Rental" : "Sale"}
+          </Chip>
+          <Chip
+            className="px-2 capitalize"
+            color="danger"
+            size="sm"
+            variant="flat"
+          >
+            {property?.type}
+          </Chip>
+          <Chip className="px-2" color="danger" size="sm" variant="flat">
+            {property?.size}sqft
+          </Chip>
+          <Chip
+            className="px-2 capitalize"
+            color="success"
+            size="sm"
+            variant="flat"
+          >
+            {property?.category}
+          </Chip>
         </div>
       </div>
 
@@ -120,12 +193,7 @@ export default function ListingDetailsPage() {
         <div className="space-y-4">
           <div className="space-y-0.5">
             <h2 className="text-2xl font-semibold">Property Description</h2>
-            <p className="text-base font-medium">
-              3-bedroom duplex located in the serene and highly sought-after
-              neighborhood of Jabi. Perfectly suited for families or savvy
-              investors, this home offers a blend of modern architecture and
-              functional living.
-            </p>
+            <p className="text-base font-medium">{property?.description}</p>
           </div>
 
           <div className="border-1 border-primary rounded-xl p-4 lg:p-6 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
@@ -153,14 +221,33 @@ export default function ListingDetailsPage() {
         </div>
 
         <div className="space-y-4">
-          <div className="space-y-3">
-            <h2 className="text-2xl font-semibold">Amenities</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <AmenitiesCard Icon={TbAirConditioning} title="Air Conditioner" />
-              <AmenitiesCard Icon={BsCupHot} title="Hot water" />
-              <AmenitiesCard Icon={PiBathtub} title="Bathtub" />
+          {propertyAmenities.length > 0 && (
+            <div className="space-y-3 max-w-2xl">
+              <h2 className="text-2xl font-semibold">Amenities</h2>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {propertyAmenities.map((amenity, index) => (
+                  <div
+                    key={`${amenity.name}-${index}`}
+                    className="bg-blue-50 border border-blue-100 rounded-2xl flex-1 min-w-[150px]"
+                  >
+                    <div className="flex pt-3 gap-4 px-6 py-3">
+                      {amenity.icon && amenity.icon.length <= 4 ? (
+                        <span className="text-2xl" title={amenity.icon}>
+                          {amenity.icon}
+                        </span>
+                      ) : (
+                        <TbTools className="text-2xl mt-0.5 flex-shrink-0 text-blue-600" />
+                      )}
+                      <p className="py-2 text-gray-800 font-medium truncate">
+                        {amenity.name}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="space-y-3">
             <h2 className="text-2xl font-semibold">Documents</h2>

@@ -2,6 +2,8 @@ import {
   GetListingsCountResponsePayload,
   GetPropertiesQueryParams,
   GetPropertiesResponse,
+  GetPropertyQueryParams,
+  GetPropertyResponsePayload,
 } from "../types/listings.type";
 
 import { Api } from "@/api";
@@ -26,4 +28,13 @@ const getPropertiesApi = async (
   return response;
 };
 
-export { getListingsCountApi, getPropertiesApi };
+const getPropertyApi = async (params: GetPropertyQueryParams) => {
+  const response = await Api.get<
+    GetPropertyResponsePayload,
+    GetPropertyResponsePayload
+  >(`/v1/properties/${params.id}`);
+
+  return response;
+};
+
+export { getListingsCountApi, getPropertiesApi, getPropertyApi };

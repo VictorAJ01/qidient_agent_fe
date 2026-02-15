@@ -93,3 +93,42 @@ export type GetPropertiesQueryParams = {
   page?: number;
   limit?: number;
 };
+
+export type GetPropertyQueryParams = {
+  id: string;
+};
+
+export type GetPropertyResponsePayload = {
+  _id: string;
+  title: string;
+  slug: string;
+  description: string;
+  price: number;
+  location: PropertyLocation;
+  type: string;
+  bedrooms: number;
+  bathrooms: number;
+  images: PropertyImage[];
+  amenities: string[];
+  status: string;
+  isRental: boolean;
+  category: string;
+  size: number;
+  yearBuilt?: number;
+  address: string;
+  state: string;
+  city: string;
+  country: string;
+  listedBy: PropertyListedBy;
+  views: number;
+  favorites: number;
+  createdAt: string;
+  updatedAt: string;
+  features: string[];
+  tags: string[];
+  __v: number;
+  url: string;
+  formattedPrice: string;
+  age: number;
+  id: number;
+};
