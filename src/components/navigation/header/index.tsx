@@ -2,12 +2,15 @@ import React from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { FiBarChart2 } from "react-icons/fi";
 import { HiOutlineMenuAlt2 } from "react-icons/hi";
+import { User } from "@heroui/react";
 
 import { headerInfo } from "./header_titles";
-import UserProfileDropdown from "./user_profile_dropdown";
 
 import OverviewStatsCard from "@/pages/overview/components/overview_stats_card";
 import { sidebarRoutes } from "@/routes";
+import { getUserRole } from "@/utils/helper";
+import { useGetUser } from "@/pages/profile/hooks/use_get_admin";
+import { UserRole } from "@/pages/profile/types/profile.type";
 
 type HeadProps = {
   sidebarOpen: string | boolean | undefined;
@@ -17,6 +20,7 @@ type HeadProps = {
 export default function Header(props: HeadProps) {
   const location = useLocation();
   const params = useParams();
+  const { user } = useGetUser();
 
   const clientDetailsRoute =
     location.pathname === `${sidebarRoutes.clients}/${params.id}`;
@@ -113,7 +117,21 @@ export default function Header(props: HeadProps) {
 
             <div className="flex items-center space-x-6">
               {location.pathname !== sidebarRoutes.profile && (
-                <UserProfileDropdown />
+                <Link className="px-4" to={sidebarRoutes.profile}>
+                  <User
+                    avatarProps={{
+                      src: user?.avatar,
+                      showFallback: true,
+                    }}
+                    className="transition-transform hidden md:flex gap-3"
+                    classNames={{
+                      name: "font-medium text-black",
+                      description: "font-rubik text-secondary-100",
+                    }}
+                    description={getUserRole(user?.role as UserRole)}
+                    name={`${user?.firstName} ${user?.lastName}`}
+                  />
+                </Link>
               )}
             </div>
           </div>
