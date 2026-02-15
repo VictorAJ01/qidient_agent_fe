@@ -12,9 +12,9 @@ import {
 import { TbAirConditioning } from "react-icons/tb";
 import { BsCupHot } from "react-icons/bs";
 
-import PropertyStats from "./property_stats";
-import AmenitiesCard from "./amenities_card";
-import DocumentsCard from "./documents_card";
+import PropertyStats from "./components/property_stats";
+import AmenitiesCard from "./components/amenities_card";
+import DocumentsCard from "./components/documents_card";
 
 export default function ListingDetailsPage() {
   return (

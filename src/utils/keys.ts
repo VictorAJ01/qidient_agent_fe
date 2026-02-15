@@ -1,4 +1,7 @@
 export const queryKeys = {
+  // listings
+  listingsCount: "listingsCount",
+
   // users
   user: "user",
 

@@ -10,9 +10,9 @@ import ResetPasswordRequestPage from "@/pages/authentication/reset_password_requ
 import LeadsInquiriesPage from "@/pages/leads/leads_inquiries";
 import DashboardLayout from "@/layouts/dashboard.layout";
 import SignupPage from "@/pages/authentication/signup.page";
-import OverviewPage from "@/pages/overview";
-import ListingsPage from "@/pages/listings";
-import ListingDetailsPage from "@/pages/listings/components/listing_details_page";
+import OverviewPage from "@/pages/overview/overview.page";
+import ListingsPage from "@/pages/listings/listings.page";
+import ListingDetailsPage from "@/pages/listings/listing_details.page";
 import ClientsPage from "@/pages/clients/clients.page";
 import ClientDetailsPage from "@/pages/clients/client_details.page";
 import LeadsPage from "@/pages/leads";
