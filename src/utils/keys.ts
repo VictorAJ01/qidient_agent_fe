@@ -11,4 +11,8 @@ export const queryKeys = {
   clientsStats: "clientsStats",
   clients: "clients",
   client: "client",
+
+  // amenities
+  amenities: "amenities",
+  amenity: "amenity",
 };

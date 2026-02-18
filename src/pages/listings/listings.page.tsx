@@ -204,6 +204,7 @@ export default function ListingsPage() {
           color="primary"
           radius="sm"
           startContent={<IoAddOutline className="text-lg" />}
+          onPress={() => navigate(sidebarRoutes.createListing)}
         >
           Add new listing
         </Button>

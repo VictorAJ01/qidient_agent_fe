@@ -13,12 +13,14 @@ import SignupPage from "@/pages/authentication/signup.page";
 import OverviewPage from "@/pages/overview/overview.page";
 import ListingsPage from "@/pages/listings/listings.page";
 import ListingDetailsPage from "@/pages/listings/listing_details.page";
+import CreateListingPage from "@/pages/listings/create_listing.page";
 import ClientsPage from "@/pages/clients/clients.page";
 import ClientDetailsPage from "@/pages/clients/client_details.page";
 import LeadsPage from "@/pages/leads";
 import BookingsPage from "@/pages/bookings";
 import NotificationsPage from "@/pages/notifications";
 import ProfilePage from "@/pages/profile/profile.page";
+import AmenitiesPage from "@/pages/amenities/amenities.page";
 
 function App() {
   return (
@@ -51,6 +53,10 @@ function App() {
           element={<ListingDetailsPage />}
           path={sidebarRoutes.viewListing}
         />
+        <Route
+          element={<CreateListingPage />}
+          path={sidebarRoutes.createListing}
+        />
         <Route element={<ClientsPage />} path={sidebarRoutes.clients} />
         <Route
           element={<ClientDetailsPage />}
@@ -62,6 +68,7 @@ function App() {
           element={<LeadsInquiriesPage />}
           path={sidebarRoutes.viewLeads}
         />
+        <Route element={<AmenitiesPage />} path={sidebarRoutes.amenities} />
         <Route
           element={<NotificationsPage />}
           path={sidebarRoutes.notifications}

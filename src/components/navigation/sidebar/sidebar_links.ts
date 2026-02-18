@@ -5,6 +5,7 @@ import { FiHome } from "react-icons/fi";
 import { PiUsersThreeBold } from "react-icons/pi";
 import { MdOutlineLeaderboard } from "react-icons/md";
 import { MdAccessTime } from "react-icons/md";
+import { TbTools } from "react-icons/tb";
 
 import { sidebarRoutes, SidebarRoutes } from "@/routes";
 
@@ -20,6 +21,11 @@ export const sidebarLinks: SidebarLinkT[] = [
     title: "Listings",
     pathname: sidebarRoutes.listings,
     icon: FiHome,
+  },
+  {
+    title: "Amenities",
+    pathname: sidebarRoutes.amenities,
+    icon: TbTools,
   },
   {
     title: "Clients",

@@ -12,6 +12,7 @@ export type AuthRoutes = (typeof authRoutes)[keyof typeof authRoutes];
 export const sidebarRoutes = {
   overview: "/dashboard/overview",
   listings: "/dashboard/listings",
+  createListing: "/dashboard/listings/create",
   viewListing: "/dashboard/listings/:id",
   clients: "/dashboard/clients",
   viewClient: "/dashboard/clients/:id",
@@ -19,6 +20,7 @@ export const sidebarRoutes = {
   viewLeads: "/dashboard/leads/:id",
   bookings: "/dashboard/bookings",
   profile: "/dashboard/profile",
+  amenities: "/dashboard/amenities",
   notifications: "/dashboard/notifications",
   analytics: "/dashboard/analytics",
 } as const;

@@ -132,3 +132,26 @@ export type GetPropertyResponsePayload = {
   age: number;
   id: number;
 };
+
+export type CreatePropertyPayload = {
+  title: string;
+  slug?: string; // URL-friendly property slug (auto-generated if not provided)
+  description: string;
+  price: number;
+  type: string;
+  bedrooms: number;
+  bathrooms: number;
+  images?: File[];
+  amenities?: string[];
+  status: string;
+  isRental: boolean;
+  category: string;
+  size?: number;
+  yearBuilt?: number;
+  address?: string;
+  state?: string;
+  city?: string;
+  country?: string;
+  features?: string[];
+  tags?: string[];
+};

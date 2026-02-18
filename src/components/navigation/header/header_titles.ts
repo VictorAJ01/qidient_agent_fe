@@ -23,6 +23,12 @@ export const headerInfo: Array<HeaderInfo> = [
     description: "Manage performance metrics, listings, and commission details",
   },
   {
+    title: "Create Property",
+    path: sidebarRoutes.createListing,
+    description:
+      "Add new property listings with detailed information, images, and availability.",
+  },
+  {
     title: "Clients",
     path: sidebarRoutes.clients,
     description: "View and manage your clients here",
@@ -46,6 +52,12 @@ export const headerInfo: Array<HeaderInfo> = [
     title: "Bookings",
     path: sidebarRoutes.bookings,
     description: "View and manage your bookings here",
+  },
+  {
+    title: "Amenities",
+    path: sidebarRoutes.amenities,
+    description:
+      "Manage property amenities such as pool, gym, parking, and more",
   },
   {
     title: "Analytics",

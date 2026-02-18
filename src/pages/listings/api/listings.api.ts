@@ -1,4 +1,5 @@
 import {
+  CreatePropertyPayload,
   GetListingsCountResponsePayload,
   GetPropertiesQueryParams,
   GetPropertiesResponse,
@@ -13,6 +14,37 @@ const getListingsCountApi = async () => {
     GetListingsCountResponsePayload,
     GetListingsCountResponsePayload
   >("/v1/properties/analytics/listing-count");
+
+  return response;
+};
+
+const createPropertyApi = async (payload: CreatePropertyPayload) => {
+  const formData = new FormData();
+
+  Object.entries(payload).forEach(([key, value]) => {
+    if (value === undefined || value === null) return;
+
+    if (key === "images" && Array.isArray(value)) {
+      value.forEach((item) => {
+        if (item instanceof File) {
+          formData.append("images", item);
+        }
+      });
+    } else if (
+      (key === "amenities" || key === "features" || key === "tags") &&
+      Array.isArray(value)
+    ) {
+      value.forEach((v) => {
+        if (v != null && v !== "") formData.append(key, String(v));
+      });
+    } else if (typeof value === "object") {
+      formData.append(key, JSON.stringify(value));
+    } else {
+      formData.append(key, String(value));
+    }
+  });
+
+  const response = await Api.post("/v1/properties", formData);
 
   return response;
 };
@@ -37,4 +69,9 @@ const getPropertyApi = async (params: GetPropertyQueryParams) => {
   return response;
 };
 
-export { getListingsCountApi, getPropertiesApi, getPropertyApi };
+export {
+  getListingsCountApi,
+  getPropertiesApi,
+  getPropertyApi,
+  createPropertyApi,
+};
