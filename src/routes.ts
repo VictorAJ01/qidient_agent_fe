@@ -20,7 +20,6 @@ export const sidebarRoutes = {
   viewLeads: "/dashboard/leads/:id",
   bookings: "/dashboard/bookings",
   profile: "/dashboard/profile",
-  amenities: "/dashboard/amenities",
   notifications: "/dashboard/notifications",
   analytics: "/dashboard/analytics",
 } as const;

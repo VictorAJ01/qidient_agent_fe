@@ -20,7 +20,6 @@ import LeadsPage from "@/pages/leads";
 import BookingsPage from "@/pages/bookings";
 import NotificationsPage from "@/pages/notifications";
 import ProfilePage from "@/pages/profile/profile.page";
-import AmenitiesPage from "@/pages/amenities/amenities.page";
 
 function App() {
   return (
@@ -68,7 +67,6 @@ function App() {
           element={<LeadsInquiriesPage />}
           path={sidebarRoutes.viewLeads}
         />
-        <Route element={<AmenitiesPage />} path={sidebarRoutes.amenities} />
         <Route
           element={<NotificationsPage />}
           path={sidebarRoutes.notifications}

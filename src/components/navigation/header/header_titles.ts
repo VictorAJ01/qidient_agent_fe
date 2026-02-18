@@ -54,12 +54,6 @@ export const headerInfo: Array<HeaderInfo> = [
     description: "View and manage your bookings here",
   },
   {
-    title: "Amenities",
-    path: sidebarRoutes.amenities,
-    description:
-      "Manage property amenities such as pool, gym, parking, and more",
-  },
-  {
     title: "Analytics",
     path: sidebarRoutes.analytics,
     description:

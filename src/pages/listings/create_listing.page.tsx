@@ -24,7 +24,7 @@ import {
   ICity,
 } from "country-state-city";
 
-import { getAmenitiesApi } from "../amenities/api/amenities.api";
+import { getAmenitiesApi } from "../../api/amenities.api";
 
 import {
   CreatePropertyPayload,
