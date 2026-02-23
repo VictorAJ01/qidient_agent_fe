@@ -143,7 +143,7 @@ export type CreatePropertyPayload = {
   bathrooms: number;
   images?: File[];
   amenities?: string[];
-  status: string;
+  // status: string;
   isRental: boolean;
   category: string;
   size?: number;

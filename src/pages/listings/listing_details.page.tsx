@@ -1,4 +1,4 @@
-import { Button, Chip, addToast } from "@heroui/react";
+import { Button, Chip, addToast, useDisclosure } from "@heroui/react";
 import { FiTrash2 } from "react-icons/fi";
 import { RiPencilLine } from "react-icons/ri";
 import { IoPersonCircleOutline } from "react-icons/io5";
@@ -20,18 +20,20 @@ import {
   PropertyStatus,
   UpdatePropertyPayload,
 } from "./types/listings.type";
+import DeletePropertyModal from "./components/delete_property_modal";
 
 import { queryKeys } from "@/utils/keys";
 import Loader from "@/components/general/loader";
 
 export default function ListingDetailsPage() {
   const { id } = useParams();
+  const queryClient = useQueryClient();
   const propertyId = id as string;
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [activeAction, setActiveAction] = useState<
     "sold" | "toggle_status" | null
   >(null);
-  const queryClient = useQueryClient();
+  const deleteModal = useDisclosure();
 
   const { data: property, isLoading } = useQuery({
     queryKey: [queryKeys.listing, propertyId],
@@ -144,6 +146,7 @@ export default function ListingDetailsPage() {
             className="text-xs font-normal bg-qidient-light-red/73 text-qidient-red-text"
             radius="sm"
             startContent={<FiTrash2 />}
+            onPress={deleteModal.onOpen}
           >
             Delete
           </Button>
@@ -307,6 +310,14 @@ export default function ListingDetailsPage() {
           </div>
         </div>
       </div>
+
+      <DeletePropertyModal
+        isOpen={deleteModal.isOpen}
+        propertyId={propertyId}
+        propertyTitle={property?.title}
+        onClose={deleteModal.onClose}
+        onOpenChange={deleteModal.onOpenChange}
+      />
     </div>
   );
 }

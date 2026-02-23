@@ -132,7 +132,7 @@ export default function CreatePropertyPage() {
       type: data.type,
       bedrooms: data.bedrooms,
       bathrooms: data.bathrooms,
-      status: data.status,
+      // status: data.status,
       isRental: data.isRental,
       category: data.category,
       state: data.state,
