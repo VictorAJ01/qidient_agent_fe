@@ -1,5 +1,4 @@
-import { Button, Chip } from "@heroui/react";
-import { FaRegStar } from "react-icons/fa";
+import { Button, Chip, addToast } from "@heroui/react";
 import { FiTrash2 } from "react-icons/fi";
 import { RiPencilLine } from "react-icons/ri";
 import { IoPersonCircleOutline } from "react-icons/io5";
@@ -10,13 +9,17 @@ import {
   PiBookOpenUserLight,
 } from "react-icons/pi";
 import { TbTools } from "react-icons/tb";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 
 import PropertyStats from "./components/property_stats";
 import DocumentsCard from "./components/documents_card";
-import { getPropertyApi } from "./api/listings.api";
-import { PropertyImage } from "./types/listings.type";
+import { getPropertyApi, updatePropertyApi } from "./api/listings.api";
+import {
+  PropertyImage,
+  PropertyStatus,
+  UpdatePropertyPayload,
+} from "./types/listings.type";
 
 import { queryKeys } from "@/utils/keys";
 import Loader from "@/components/general/loader";
@@ -25,11 +28,44 @@ export default function ListingDetailsPage() {
   const { id } = useParams();
   const propertyId = id as string;
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [activeAction, setActiveAction] = useState<
+    "sold" | "toggle_status" | null
+  >(null);
+  const queryClient = useQueryClient();
 
   const { data: property, isLoading } = useQuery({
     queryKey: [queryKeys.listing, propertyId],
     queryFn: () => getPropertyApi({ id: propertyId }),
   });
+
+  const { mutate: updateProperty, isPending: isUpdating } = useMutation({
+    mutationFn: (payload: UpdatePropertyPayload) =>
+      updatePropertyApi({ id: propertyId }, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [queryKeys.listing, propertyId],
+      });
+      addToast({ title: "Property updated successfully", color: "success" });
+      setActiveAction(null);
+    },
+    onError: (error) => {
+      addToast({
+        title: typeof error === "string" ? error : "Failed to update property",
+        color: "danger",
+      });
+      setActiveAction(null);
+    },
+  });
+
+  const isPropertySold =
+    property?.status === "sold" || property?.status === "rented";
+  const soldPropertyButtonText =
+    activeAction === "sold"
+      ? "Updating..."
+      : isPropertySold
+        ? "Sold"
+        : "Mark as sold";
+  const propertyStatus = property?.status as PropertyStatus;
 
   const propertyAmenities = (property?.amenities ?? [])
     .map((item): { name: string; icon?: string } => {
@@ -66,25 +102,37 @@ export default function ListingDetailsPage() {
 
         <div className="flex items-center gap-3">
           <Button
-            className="text-xs font-normal"
-            color="primary"
-            radius="sm"
-            startContent={<FaRegStar />}
-          >
-            Feature
-          </Button>
-          <Button
             className="text-xs font-normal bg-qidient-orange text-qidient-orange-text"
+            isDisabled={isUpdating || isPropertySold}
+            isLoading={activeAction === "sold"}
             radius="sm"
+            onPress={() => {
+              setActiveAction("sold");
+              updateProperty({ status: "sold" });
+            }}
           >
-            Mark as sold
+            {soldPropertyButtonText}
           </Button>
-          <Button
-            className="text-xs font-normal bg-qidient-orange text-qidient-orange-text"
-            radius="sm"
-          >
-            Activate
-          </Button>
+          {isPropertySold && (
+            <Button
+              className="text-xs font-normal bg-qidient-orange text-qidient-orange-text"
+              isDisabled={isUpdating}
+              isLoading={activeAction === "toggle_status"}
+              radius="sm"
+              onPress={() => {
+                setActiveAction("toggle_status");
+                updateProperty({
+                  status:
+                    propertyStatus === "available"
+                      ? "temporarily_unavailable"
+                      : "available",
+                });
+              }}
+            >
+              {propertyStatus === "available" ? "Deactivate" : "Activate"}
+            </Button>
+          )}
+
           <Button
             className="text-xs font-normal bg-qidient-orange text-qidient-orange-text"
             radius="sm"

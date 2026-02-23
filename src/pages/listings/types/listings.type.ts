@@ -155,3 +155,82 @@ export type CreatePropertyPayload = {
   features?: string[];
   tags?: string[];
 };
+
+export type PropertyStatus =
+  | "available"
+  | "active"
+  | "new_listing"
+  | "price_reduced"
+  | "approved"
+  | "pending"
+  | "under_contract"
+  | "contingent"
+  | "in_escrow"
+  | "sold"
+  | "rented"
+  | "leased"
+  | "off_market"
+  | "temporarily_unavailable"
+  | "maintenance"
+  | "withdrawn"
+  | "cancelled"
+  | "expired";
+
+export type UpdatePropertyQueryParams = {
+  id: string;
+};
+
+export type UpdatePropertyPayload = {
+  title?: string;
+  slug?: string;
+  description?: string;
+  price?: number;
+  type?: string;
+  bedrooms?: number;
+  bathrooms?: number;
+  images?: File[];
+  amenities?: string[];
+  isRental?: boolean;
+  category?: string;
+  size?: number;
+  yearBuilt?: number;
+  address?: string;
+  state?: string;
+  city?: string;
+  country?: string;
+  features?: string[];
+  tags?: string[];
+  status?: PropertyStatus;
+};
+
+export type UpdatePropertyResponsePayload = {
+  _id: string;
+  title: string;
+  slug: string;
+  description: string;
+  price: number;
+  type: string;
+  bedrooms: number;
+  bathrooms: number;
+  images: PropertyImage[];
+  amenities: string[];
+  status: PropertyStatus;
+  isRental: boolean;
+  category: string;
+  size: number;
+  yearBuilt: number;
+  address: string;
+  state: string;
+  city: string;
+  country: string;
+  listedBy: string;
+  views: number;
+  favorites: number;
+  isFavorite: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type DeletePropertyQueryParams = {
+  id: string;
+};

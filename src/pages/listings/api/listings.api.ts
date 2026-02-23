@@ -1,10 +1,14 @@
 import {
   CreatePropertyPayload,
+  DeletePropertyQueryParams,
   GetListingsCountResponsePayload,
   GetPropertiesQueryParams,
   GetPropertiesResponse,
   GetPropertyQueryParams,
   GetPropertyResponsePayload,
+  UpdatePropertyPayload,
+  UpdatePropertyQueryParams,
+  UpdatePropertyResponsePayload,
 } from "../types/listings.type";
 
 import { Api } from "@/api";
@@ -69,9 +73,29 @@ const getPropertyApi = async (params: GetPropertyQueryParams) => {
   return response;
 };
 
+const updatePropertyApi = async (
+  params: UpdatePropertyQueryParams,
+  payload: UpdatePropertyPayload,
+) => {
+  const response = await Api.patch<
+    UpdatePropertyResponsePayload,
+    UpdatePropertyResponsePayload
+  >(`/v1/properties/${params.id}`, payload);
+
+  return response;
+};
+
+const deletePropertyApi = async (params: DeletePropertyQueryParams) => {
+  const response = await Api.delete(`/v1/properties/${params.id}`);
+
+  return response;
+};
+
 export {
   getListingsCountApi,
   getPropertiesApi,
   getPropertyApi,
   createPropertyApi,
+  updatePropertyApi,
+  deletePropertyApi,
 };
