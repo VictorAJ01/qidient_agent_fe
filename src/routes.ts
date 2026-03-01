@@ -13,6 +13,7 @@ export const sidebarRoutes = {
   overview: "/dashboard/overview",
   listings: "/dashboard/listings",
   createListing: "/dashboard/listings/create",
+  updateListing: "/dashboard/listings/:id/edit",
   viewListing: "/dashboard/listings/:id",
   clients: "/dashboard/clients",
   viewClient: "/dashboard/clients/:id",

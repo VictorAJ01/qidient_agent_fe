@@ -73,14 +73,61 @@ const getPropertyApi = async (params: GetPropertyQueryParams) => {
   return response;
 };
 
+const buildPropertyFormData = (payload: Record<string, unknown>): FormData => {
+  const formData = new FormData();
+
+  Object.entries(payload).forEach(([key, value]) => {
+    if (value === undefined || value === null) return;
+
+    if (key === "images" && Array.isArray(value)) {
+      value.forEach((item) => {
+        if (item instanceof File) {
+          formData.append("images", item);
+        }
+      });
+    } else if (
+      (key === "amenities" || key === "features" || key === "tags") &&
+      Array.isArray(value)
+    ) {
+      value.forEach((v) => {
+        if (v != null && v !== "") formData.append(key, String(v));
+      });
+    } else if (typeof value === "object") {
+      formData.append(key, JSON.stringify(value));
+    } else {
+      formData.append(key, String(value));
+    }
+  });
+
+  return formData;
+};
+
 const updatePropertyApi = async (
   params: UpdatePropertyQueryParams,
   payload: UpdatePropertyPayload,
 ) => {
+  const hasFileImages =
+    Array.isArray(payload.images) &&
+    payload.images.some((item) => item instanceof File);
+
+  if (hasFileImages) {
+    const formData = buildPropertyFormData(
+      payload as unknown as Record<string, unknown>,
+    );
+    const response = await Api.patch<
+      UpdatePropertyResponsePayload,
+      UpdatePropertyResponsePayload
+    >(`/v1/properties/${params.id}`, formData);
+
+    return response;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- images excluded for JSON payload
+  const { images, ...jsonPayload } = payload;
   const response = await Api.patch<
     UpdatePropertyResponsePayload,
     UpdatePropertyResponsePayload
-  >(`/v1/properties/${params.id}`, payload);
+  >(`/v1/properties/${params.id}`, jsonPayload);
 
   return response;
 };

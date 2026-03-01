@@ -10,7 +10,7 @@ import {
 } from "react-icons/pi";
 import { TbTools } from "react-icons/tb";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import PropertyStats from "./components/property_stats";
 import DocumentsCard from "./components/documents_card";
@@ -22,6 +22,7 @@ import {
 } from "./types/listings.type";
 import DeletePropertyModal from "./components/delete_property_modal";
 
+import { sidebarRoutes } from "@/routes";
 import { queryKeys } from "@/utils/keys";
 import Loader from "@/components/general/loader";
 
@@ -136,9 +137,11 @@ export default function ListingDetailsPage() {
           )}
 
           <Button
+            as={Link}
             className="text-xs font-normal bg-qidient-orange text-qidient-orange-text"
             radius="sm"
             startContent={<RiPencilLine />}
+            to={sidebarRoutes.updateListing.replace(":id", propertyId)}
           >
             Edit
           </Button>
