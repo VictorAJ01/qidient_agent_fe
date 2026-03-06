@@ -71,6 +71,9 @@ export default function SignupPage() {
       role: data.role,
     };
 
+    localStorage.setItem("email", payload.email);
+    localStorage.setItem("role", payload.role);
+
     mutate(payload);
   };
 

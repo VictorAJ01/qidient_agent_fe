@@ -33,6 +33,7 @@ export default function SigninPage() {
     defaultValues: {
       deviceName: osName,
       deviceType: isMobile ? "smartphone" : "desktop",
+      role: "agent",
     },
   });
 
@@ -61,6 +62,7 @@ export default function SigninPage() {
       password: data.password,
       deviceName: data.deviceName,
       deviceType: data.deviceType,
+      role: data.role,
     };
 
     mutate(payload);

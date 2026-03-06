@@ -25,11 +25,16 @@ export default function ResetPasswordPage() {
     formState: { errors },
   } = useForm<ResetPasswordSchema>({
     resolver: yupResolver(ResetPasswordSchema),
+    defaultValues: {
+      role: "agent",
+    },
   });
 
   const { mutate, isPending } = useMutation({
     mutationFn: resetPasswordApi,
     onSuccess: () => {
+      localStorage.removeItem("email");
+      localStorage.removeItem("role");
       navigate(authRoutes.login);
     },
     onError: (error: string) => {
@@ -47,6 +52,7 @@ export default function ResetPasswordPage() {
     const payload = {
       email,
       newPassword: data.password,
+      role: data.role,
     };
 
     mutate(payload);

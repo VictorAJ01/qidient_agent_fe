@@ -11,6 +11,8 @@ export default function VerifySignupOtpPage() {
 
   const handleSuccess = (data: OtpResponsePayload) => {
     setCredentials(data.accessToken, data.user._id);
+    localStorage.removeItem("email");
+    localStorage.removeItem("role");
     navigate(sidebarRoutes.overview);
   };
 

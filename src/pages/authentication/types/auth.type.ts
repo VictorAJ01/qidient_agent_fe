@@ -1,4 +1,5 @@
 export type Role = "user" | "super-admin" | "agent";
+
 export type DeviceType =
   | "smartphone"
   | "tablet"
@@ -23,10 +24,11 @@ export type SignupResponsePayload = {
 };
 
 export type LoginPayload = {
-  email: string;
-  password: string;
   deviceName: string;
   deviceType: DeviceType;
+  email: string;
+  role: Role;
+  password: string;
 };
 
 export type LoginResponsePayload = {
@@ -62,20 +64,24 @@ export type OtpResponsePayload = {
   user: User;
 };
 
+export type ResendOtpPayload = {
+  email: string;
+  role: Role;
+};
+
 export type ResetPasswordPayload = {
   email: string;
   newPassword: string;
+  role: Role;
 };
 
 export type ResetPasswordResponsePayload = {
-  isError: boolean;
   message: string;
-  description: string;
-  payload: null;
 };
 
 export type RequestResetPasswordPayload = {
   email: string;
+  role: Role;
 };
 
 export type ChangePasswordPayload = {

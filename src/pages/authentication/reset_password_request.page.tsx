@@ -20,12 +20,17 @@ export default function ResetPasswordRequestPage() {
     formState: { errors },
   } = useForm<RequestResetPasswordSchema>({
     resolver: yupResolver(RequestResetPasswordSchema),
+    defaultValues: {
+      role: "agent",
+    },
   });
 
   const { mutate, isPending } = useMutation({
     mutationFn: requestResetPasswordApi,
-    onSuccess: (data) => {
-      setCredentials(data.accessToken);
+    onSuccess: (_, variables) => {
+      setCredentials(_.accessToken);
+      localStorage.setItem("email", variables.email);
+      localStorage.setItem("role", "agent");
       navigate(authRoutes.verifyResetPasswordOTP);
     },
     onError: (error: string) =>
@@ -38,8 +43,15 @@ export default function ResetPasswordRequestPage() {
 
   const onSubmit: SubmitHandler<RequestResetPasswordSchema> = (data) => {
     const email = data.email.trim().toLowerCase();
+    const payload = {
+      ...data,
+      email,
+    };
 
-    mutate({ email });
+    localStorage.setItem("email", email);
+    localStorage.setItem("role", "agent");
+
+    mutate(payload);
   };
 
   return (

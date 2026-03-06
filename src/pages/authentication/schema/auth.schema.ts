@@ -10,6 +10,10 @@ export const SignInSchema = yup.object().shape({
     .required("Device name is required")
     .max(100, "Device name too long"),
   deviceType: yup.string().required("Device type is required"),
+  role: yup
+    .mixed<Role>()
+    .oneOf(["user", "super-admin", "agent"], "Invalid role selected")
+    .required("Role is required"),
 });
 
 export const SignUpSchema = yup.object().shape({
@@ -32,6 +36,10 @@ export const SignUpSchema = yup.object().shape({
 
 export const RequestResetPasswordSchema = yup.object().shape({
   email: yup.string().email().required("Email is required"),
+  role: yup
+    .mixed<Role>()
+    .oneOf(["user", "super-admin", "agent"], "Invalid role selected")
+    .required("Role is required"),
 });
 
 export const ResetPasswordSchema = yup.object().shape({
@@ -40,6 +48,10 @@ export const ResetPasswordSchema = yup.object().shape({
     .string()
     .required("Confirm Password")
     .oneOf([yup.ref("password")], "Passwords must match"),
+  role: yup
+    .mixed<Role>()
+    .oneOf(["user", "super-admin", "agent"], "Invalid role selected")
+    .required("Role is required"),
 });
 
 export const VerifyOtpSchema = yup.object().shape({
