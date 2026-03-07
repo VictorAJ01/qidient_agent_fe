@@ -126,7 +126,7 @@ export default function Header(props: HeadProps) {
                       name: "font-medium text-black",
                       description: "font-rubik text-secondary-100",
                     }}
-                    description="Agent"
+                    description={agent?.role ?? "Agent"}
                     name={`${agent?.firstName} ${agent?.lastName}`}
                   />
                 </Link>

@@ -1,6 +1,6 @@
-import { UserRole } from "@/pages/profile/types/profile.type";
+import { Role } from "@/pages/profile/types/profile.type";
 
-export const getUserRole = (role: UserRole) => {
+export const getUserRole = (role: Role) => {
   switch (role) {
     case "user":
       return "User";
