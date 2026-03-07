@@ -8,9 +8,7 @@ import { headerInfo } from "./header_titles";
 
 import OverviewStatsCard from "@/pages/overview/components/overview_stats_card";
 import { sidebarRoutes } from "@/routes";
-import { getUserRole } from "@/utils/helper";
-import { useGetUser } from "@/pages/profile/hooks/use_get_admin";
-import { UserRole } from "@/pages/profile/types/profile.type";
+import { useGetAgent } from "@/pages/profile/hooks/use_get_agent";
 
 type HeadProps = {
   sidebarOpen: string | boolean | undefined;
@@ -20,7 +18,7 @@ type HeadProps = {
 export default function Header(props: HeadProps) {
   const location = useLocation();
   const params = useParams();
-  const { user } = useGetUser();
+  const { agent } = useGetAgent();
 
   const clientDetailsRoute =
     location.pathname === `${sidebarRoutes.clients}/${params.id}`;
@@ -120,7 +118,7 @@ export default function Header(props: HeadProps) {
                 <Link className="px-4" to={sidebarRoutes.profile}>
                   <User
                     avatarProps={{
-                      src: user?.avatar,
+                      src: agent?.avatar,
                       showFallback: true,
                     }}
                     className="transition-transform hidden md:flex gap-3"
@@ -128,8 +126,8 @@ export default function Header(props: HeadProps) {
                       name: "font-medium text-black",
                       description: "font-rubik text-secondary-100",
                     }}
-                    description={getUserRole(user?.role as UserRole)}
-                    name={`${user?.firstName} ${user?.lastName}`}
+                    description="Agent"
+                    name={`${agent?.firstName} ${agent?.lastName}`}
                   />
                 </Link>
               )}

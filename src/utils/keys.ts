@@ -7,6 +7,8 @@ export const queryKeys = {
   // users
   user: "user",
 
+  agent: "agent",
+
   // clients
   clientsStats: "clientsStats",
   clients: "clients",

@@ -4,13 +4,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { updateNotificationSettingsApi } from "../api/profile.api";
 import { NotificationSettingsPayload } from "../types/profile.type";
-import { useGetUser } from "../hooks/use_get_admin";
+import { useGetAgent } from "../hooks/use_get_agent";
 
 import { queryKeys } from "@/utils/keys";
 
 export default function NotificationSettings() {
   const queryClient = useQueryClient();
-  const { user } = useGetUser();
+  const { agent } = useGetAgent();
 
   const [settings, setSettings] = useState<NotificationSettingsPayload>({
     securityAlerts: false,
@@ -21,16 +21,16 @@ export default function NotificationSettings() {
   });
 
   useEffect(() => {
-    if (user?.notifications) {
-      setSettings(user.notifications);
+    if (agent?.notifications) {
+      setSettings(agent.notifications);
     }
-  }, [user]);
+  }, [agent]);
 
   const { mutate, isPending } = useMutation({
     mutationFn: (payload: NotificationSettingsPayload) =>
       updateNotificationSettingsApi(payload),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [queryKeys.user] });
+      queryClient.invalidateQueries({ queryKey: [queryKeys.agent] });
       addToast({
         title: "Success",
         description: "Settings updated successfully",

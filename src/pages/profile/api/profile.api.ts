@@ -1,25 +1,35 @@
 import {
-  GetUserResponsePayload,
+  Agent,
+  GetAgentQueryParams,
   NotificationSettingsPayload,
+  UpdateAgentPayload,
 } from "../types/profile.type";
 
 import { Api } from "@/api";
 
-const getUserApi = async () => {
-  const response = await Api.get<
-    GetUserResponsePayload,
-    GetUserResponsePayload
-  >("/v1/user/me");
+const getAgentApi = async (params: GetAgentQueryParams) => {
+  const response = await Api.get<Agent, Agent>("/v1/agent/profile", {
+    params,
+  });
 
   return response;
 };
 
 const updateNotificationSettingsApi = async (
   payload: NotificationSettingsPayload,
-): Promise<GetUserResponsePayload> => {
-  const response = await Api.patch("/v1/user/profile/notifications", payload);
+) => {
+  const response = await Api.patch<Agent, Agent>(
+    "/v1/agent/profile/notifications",
+    payload,
+  );
 
-  return response.data;
+  return response;
 };
 
-export { getUserApi, updateNotificationSettingsApi };
+const updateAgentApi = async (payload: UpdateAgentPayload) => {
+  const response = await Api.patch<Agent, Agent>("/v1/agent/profile", payload);
+
+  return response;
+};
+
+export { getAgentApi, updateNotificationSettingsApi, updateAgentApi };

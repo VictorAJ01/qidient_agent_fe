@@ -4,22 +4,7 @@ export enum PROFILE_TABS {
   NotificationSettings = "notification settings",
 }
 
-export type UserRole = "user" | "agent" | "super-admin";
-
-export type GetUserResponsePayload = {
-  _id: string;
-  email: string;
-  firstName: string | null;
-  lastName: string | null;
-  phone: string | null;
-  role: UserRole;
-  status: string;
-  avatar: string;
-  createdAt: string;
-  updatedAt: string;
-  id: string;
-  notifications: NotificationSettingsPayload | null;
-};
+export type Role = "user" | "agent" | "super-admin";
 
 export type NotificationSettingsPayload = {
   securityAlerts: boolean;
@@ -27,4 +12,44 @@ export type NotificationSettingsPayload = {
   listingAlerts: boolean;
   emailNotifications: boolean;
   pushNotifications: boolean;
+};
+
+export type Location = {
+  lng: number;
+  lat: number;
+  place_id: number;
+};
+
+export type Agent = {
+  _id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  role: Role;
+  status: string;
+  avatar?: string;
+  notifications: NotificationSettingsPayload;
+  aboutMe?: string;
+  isVerified: boolean;
+  address?: string;
+  city?: string;
+  state?: string;
+  country?: string;
+  location?: Location;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type GetAgentQueryParams = {
+  id: string;
+};
+
+export type UpdateAgentPayload = {
+  phone: string;
+  aboutMe?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  country?: string;
 };
