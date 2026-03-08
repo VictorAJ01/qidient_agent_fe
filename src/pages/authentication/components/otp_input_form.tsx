@@ -15,6 +15,8 @@ export type OtpInputFormProps = {
 
 export default function OtpInputForm({ onSuccess }: OtpInputFormProps) {
   const [timer, setTimer] = useState(60);
+  const email = localStorage.getItem("email") || "your email";
+  const role = localStorage.getItem("role") as Role;
 
   const {
     control,
@@ -25,13 +27,11 @@ export default function OtpInputForm({ onSuccess }: OtpInputFormProps) {
   });
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    if (timer === 0) return;
 
-    if (timer > 0) {
-      interval = setInterval(() => {
-        setTimer((prev) => prev - 1);
-      }, 1000);
-    }
+    const interval = setInterval(() => {
+      setTimer((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
 
     return () => clearInterval(interval);
   }, [timer]);
@@ -78,9 +78,6 @@ export default function OtpInputForm({ onSuccess }: OtpInputFormProps) {
   });
 
   const handleResend = () => {
-    const email = localStorage.getItem("email");
-    const role = localStorage.getItem("role") as Role;
-
     if (!email) {
       addToast({
         title: "Error",
@@ -97,14 +94,15 @@ export default function OtpInputForm({ onSuccess }: OtpInputFormProps) {
   const onSubmit: SubmitHandler<VerifyOtpSchema> = (data) => mutate(data);
 
   return (
-    <div className="w-full space-y-6">
-      <div className="max-w-xs space-y-2">
+    <div className="w-full space-y-4">
+      <div className="max-w-sm space-y-2">
         <p className="text-base text-grey font-medium">
-          A one-time password has been sent to your email address
+          A one-time password has been sent to your email address:{" "}
+          <span className="font-semibold">{email}</span>
         </p>
       </div>
 
-      <Form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+      <Form className="space-y-2" onSubmit={handleSubmit(onSubmit)}>
         <div className="w-full">
           <Controller
             control={control}
@@ -140,21 +138,21 @@ export default function OtpInputForm({ onSuccess }: OtpInputFormProps) {
           </Button>
         </div>
 
-        <div className="flex justify-center items-center">
-          <p className="text-base text-black2 font-medium">
+        <div className="flex justify-center pt-2">
+          <p className="text-sm text-black2">
             Didn&apos;t receive code?{" "}
             {timer > 0 ? (
-              <span className="text-primary font-semibold">
+              <span className="text-primary font-bold ml-1">
                 Resend in {timer}s
               </span>
             ) : (
               <button
-                className="text-primary font-semibold cursor-pointer disabled:opacity-50"
+                className="text-primary font-bold hover:underline disabled:opacity-50"
                 disabled={isResending}
                 type="button"
                 onClick={handleResend}
               >
-                {isResending ? "Resending..." : "Resend OTP"}
+                {isResending ? "Sending..." : "Resend OTP"}
               </button>
             )}
           </p>

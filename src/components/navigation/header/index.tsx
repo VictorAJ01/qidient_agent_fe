@@ -124,7 +124,7 @@ export default function Header(props: HeadProps) {
                     className="transition-transform hidden md:flex gap-3"
                     classNames={{
                       name: "font-medium text-black",
-                      description: "font-rubik text-secondary-100",
+                      description: "font-rubik text-secondary-100 capitalize",
                     }}
                     description={agent?.role ?? "Agent"}
                     name={`${agent?.firstName} ${agent?.lastName}`}
