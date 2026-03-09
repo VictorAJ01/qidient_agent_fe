@@ -7,10 +7,20 @@ import { IoReload } from "react-icons/io5";
 import { IoMdPeople } from "react-icons/io";
 import { FaTag } from "react-icons/fa6";
 import { IoMdInformationCircle } from "react-icons/io";
-import { Input, Tabs, Tab, Button, Checkbox, Pagination } from "@heroui/react";
+import {
+  Input,
+  Tabs,
+  Tab,
+  Button,
+  Checkbox,
+  Pagination,
+  Spinner,
+} from "@heroui/react";
 import { PiTagChevronThin } from "react-icons/pi";
+import { format } from "date-fns";
 
-import { initialLeads } from "./types/leads.types";
+import { useLeads } from "./hooks/use_leads";
+import { LeadsStatus, LeadSource, LeadPriority } from "./types/leads.types";
 
 const tabs = [
   {
@@ -56,31 +66,57 @@ export default function LeadsPage() {
   const [selected, setSelected] = useState<Record<string, boolean>>({});
   const [page, setPage] = useState<number>(1);
 
-  const pageSize = 9;
+  const pageSize = 10;
+
+  const params = useMemo(() => {
+    const base: any = {
+      page,
+      limit: pageSize,
+      sortBy: "createdAt",
+      sortOrder: "desc",
+    };
+
+    switch (activeTab) {
+      case "referrals":
+        base.source = "referral" as LeadSource;
+        break;
+      case "website":
+        base.source = "website" as LeadSource;
+        break;
+      case "campaigns":
+        base.source = "campaign" as LeadSource;
+        break;
+      case "archived":
+        base.status = ["closed_won", "closed_lost"] as unknown as LeadsStatus;
+        break;
+      case "hot":
+      default:
+        base.priority = "high" as LeadPriority;
+        break;
+    }
+
+    return base;
+  }, [activeTab, page]);
+
+  const { leadsData, isLoading, refetch } = useLeads(params);
 
   const filtered = useMemo(() => {
+    if (!leadsData?.leads) return [];
     const q = query.trim().toLowerCase();
-    let list = initialLeads;
 
     if (q) {
-      list = list.filter(
+      return leadsData.leads.filter(
         (l) =>
-          l.sender.toLowerCase().includes(q) ||
-          l.subject.toLowerCase().includes(q) ||
-          l.preview.toLowerCase().includes(q),
+          l.sourceDetails?.toLowerCase().includes(q) ||
+          l.status?.toLowerCase().includes(q) ||
+          l.priority?.toLowerCase().includes(q),
       );
     }
 
-    return list;
-  }, [query]);
+    return leadsData.leads;
+  }, [leadsData, query]);
 
-  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
-
-  const pageItems = useMemo(() => {
-    const start = (page - 1) * pageSize;
-
-    return filtered.slice(start, start + pageSize);
-  }, [filtered, page]);
+  const totalPages = leadsData?.meta?.totalPages || 1;
 
   const toggleSelect = (id: string) => {
     setSelected((s) => ({ ...s, [id]: !s[id] }));
@@ -92,7 +128,10 @@ export default function LeadsPage() {
         <div className="bg-white rounded-2xl  px-4 sm:px-6 py-4 mb-4">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
             <h3 className="text-gray-900 font-medium font-rubik text-xl">
-              All Leads <span className="text-primary">(50)</span>
+              All Leads{" "}
+              <span className="text-primary">
+                ({leadsData?.meta?.total || 0})
+              </span>
             </h3>
 
             <div className="w-full sm:w-[320px] md:w-[380px] ml-auto">
@@ -123,7 +162,7 @@ export default function LeadsPage() {
               <MdArrowDropDown className="text-2xl text-grey" />
             </div>
 
-            <Button isIconOnly variant="light">
+            <Button isIconOnly variant="light" onClick={() => refetch()}>
               <IoReload className="w-5 h-5 text-grey" />
             </Button>
 
@@ -145,7 +184,10 @@ export default function LeadsPage() {
             color="primary"
             selectedKey={activeTab}
             variant="underlined"
-            onSelectionChange={(key) => setActiveTab(String(key))}
+            onSelectionChange={(key) => {
+              setActiveTab(String(key));
+              setPage(1);
+            }}
           >
             {tabs.map((t) => (
               <Tab
@@ -181,59 +223,73 @@ export default function LeadsPage() {
           </Tabs>
 
           <div className="overflow-x-auto mt-4">
-            <div className="min-w-[600px] divide-y divide-grey-10">
-              {pageItems.map((lead) => (
-                <div
-                  key={lead.id}
-                  className="flex items-center gap-4 px-4 py-5 hover:bg-light-90"
-                >
-                  <Checkbox
-                    defaultChecked={!!selected[lead.id]}
-                    radius="sm"
-                    size="md"
-                    onChange={() => toggleSelect(lead.id)}
-                  />
+            {isLoading ? (
+              <div className="flex justify-center py-20">
+                <Spinner label="Loading Leads..." />
+              </div>
+            ) : (
+              <div className="min-w-[600px] divide-y divide-grey-10">
+                {filtered.map((lead) => (
+                  <div
+                    key={lead._id}
+                    className="flex items-center gap-4 px-4 py-5 hover:bg-light-90"
+                  >
+                    <Checkbox
+                      isSelected={!!selected[lead._id]}
+                      radius="sm"
+                      size="md"
+                      onValueChange={() => toggleSelect(lead._id)}
+                    />
 
-                  <PiTagChevronThin className="w-5 h-5 text-grey" />
+                    <PiTagChevronThin className="w-5 h-5 text-grey" />
 
-                  <div className="w-full">
-                    <Link to={`/dashboard/leads/${lead.id}`}>
-                      <div className="flex justify-between items-center">
-                        <div className="flex justify-between items-center gap-24">
-                          <p className="whitespace-nowrap font-semibold text-sm text-black cursor-pointer">
-                            {lead.sender}
-                          </p>
-                          <p className="text-sm text-grey">
-                            <span className="font-semibold text-black">
-                              {lead.subject}
-                            </span>{" "}
-                            - {lead.preview}
-                          </p>
+                    <div className="w-full">
+                      <Link to={`/dashboard/leads/${lead._id}`}>
+                        <div className="flex justify-between items-center">
+                          <div className="flex justify-between items-center gap-6 md:gap-24">
+                            <p className="whitespace-nowrap font-semibold text-sm text-black cursor-pointer">
+                              {lead.source.charAt(0).toUpperCase() +
+                                lead.source.slice(1)}{" "}
+                              Lead
+                            </p>
+                            <p className="text-sm text-grey">
+                              <span className="font-semibold text-black">
+                                {lead.status.replace("_", " ").toUpperCase()}
+                              </span>{" "}
+                              - {lead.sourceDetails || "No details provided"}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-sm font-semibold text-black whitespace-nowrap">
+                              {format(new Date(lead.createdAt), "hh:mm a")}
+                            </p>
+                          </div>
                         </div>
-                        <div>
-                          <p className="text-sm font-semibold text-black whitespace-nowrap">
-                            {" "}
-                            {lead.time}
-                          </p>
-                        </div>
-                      </div>
-                    </Link>
+                      </Link>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+                {!filtered.length && (
+                  <div className="text-center py-10 text-gray-500">
+                    No leads found for this category.
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Pagination */}
-            <div className="py-4 flex justify-center items-center">
-              <Pagination
-                showControls
-                className="gap-2"
-                color="primary"
-                initialPage={page}
-                total={totalPages}
-                onChange={setPage}
-              />
-            </div>
+            {!isLoading && totalPages > 1 && (
+              <div className="py-4 flex justify-center items-center">
+                <Pagination
+                  showControls
+                  className="gap-2"
+                  color="primary"
+                  initialPage={page}
+                  total={totalPages}
+                  onChange={setPage}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>

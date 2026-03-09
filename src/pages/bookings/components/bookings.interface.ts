@@ -4,19 +4,8 @@ export type BookingStatus =
   | "rescheduled"
   | "pending";
 
-export interface BookingI {
-  id: string;
-  date: number;
-  status: BookingStatus;
-  name: string;
-  property: string;
-  type: string;
-  time: string;
-  backgroundColor: string;
-}
-
 export const statusBadges: Record<
-  BookingStatus,
+  string,
   {
     label: string;
     color: string;
@@ -25,79 +14,32 @@ export const statusBadges: Record<
 > = {
   confirmed: {
     label: "Confirmed",
-    color: "bg-secondary-200/40  text-qidient-green",
-    dot: "bg-qidient-green",
+    color: "bg-green-100 text-green-700",
+    dot: "bg-green-500",
   },
   cancelled: {
     label: "Cancelled",
-    color: "bg-qidient-light-red/40 text-qidient-red",
-    dot: "bg-qidient-red",
+    color: "bg-red-100 text-red-700",
+    dot: "bg-red-500",
   },
   rescheduled: {
     label: "Rescheduled",
-    color: "bg-qidient-blue-light/40 text-dark-blue",
+    color: "bg-blue-100 text-blue-700",
     dot: "bg-blue-500",
   },
   pending: {
     label: "Pending",
-    color: "bg-qidient-orange-100/40 text-qidient-orange-text",
-    dot: "bg-qidient-orange-text",
+    color: "bg-orange-100 text-orange-700",
+    dot: "bg-orange-500",
+  },
+  completed: {
+    label: "Completed",
+    color: "bg-gray-100 text-gray-700",
+    dot: "bg-gray-500",
+  },
+  no_show: {
+    label: "No Show",
+    color: "bg-purple-100 text-purple-700",
+    dot: "bg-purple-500",
   },
 };
-
-export const bookings: BookingI[] = [
-  {
-    id: "1",
-    date: 30,
-    status: "pending",
-    name: "Praise Madumere",
-    property: "Terrace Duplex, Jabi",
-    type: "Physical Tour",
-    time: "8:45AM",
-    backgroundColor: "bg-orange-100",
-  },
-  {
-    id: "2",
-    date: 6,
-    status: "pending",
-    name: "Praise Madumere",
-    property: "Terrace Duplex, Jabi",
-    type: "Physical Tour",
-    time: "8:45AM",
-    backgroundColor: "bg-orange-100",
-  },
-  {
-    id: "3",
-    date: 13,
-    status: "confirmed",
-    name: "Praise Madumere",
-    property: "Terrace Duplex, Jabi",
-    type: "Physical Tour",
-    time: "8:45AM",
-    backgroundColor: "bg-green-100",
-  },
-  {
-    id: "4",
-    date: 16,
-    status: "cancelled",
-    name: "Praise Madumere",
-    property: "Terrace Duplex, Jabi",
-    type: "Physical Tour",
-    time: "8:45AM",
-    backgroundColor: "bg-red-100",
-  },
-  {
-    id: "5",
-    date: 23,
-    status: "rescheduled",
-    name: "Praise Madumere",
-    property: "Terrace Duplex, Jabi",
-    type: "Physical Tour",
-    time: "8:45AM",
-    backgroundColor: "bg-blue-100",
-  },
-];
-
-export const calendarDates = [
-  30, 31, 2, 3, 5, 6, 7, 11, 13, 15, 16, 17, 19, 21, 22, 23,
-];

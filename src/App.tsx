@@ -17,7 +17,7 @@ import CreateListingPage from "@/pages/listings/create_listing.page";
 import UpdateListingPage from "@/pages/listings/update_listing.page";
 import ClientsPage from "@/pages/clients/clients.page";
 import ClientDetailsPage from "@/pages/clients/client_details.page";
-import LeadsPage from "@/pages/leads";
+import LeadsPage from "@/pages/leads/leads.page";
 import BookingsPage from "@/pages/bookings/bookings.page";
 import NotificationsPage from "@/pages/notifications";
 import ProfilePage from "@/pages/profile/profile.page";
