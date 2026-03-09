@@ -5,6 +5,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import {
+  Autocomplete,
+  AutocompleteItem,
   Button,
   Input,
   Select,
@@ -35,7 +37,6 @@ import ImageUploader from "./components/image_uploader";
 import {
   featuresOptions,
   propertyCategories,
-  propertyStatuses,
   propertyTypes,
 } from "./utils/data";
 
@@ -318,29 +319,6 @@ export default function CreatePropertyPage() {
 
         <Controller
           control={control}
-          name="status"
-          render={({ field }) => (
-            <Select
-              aria-label="Property status"
-              errorMessage={errors.status?.message}
-              isInvalid={!!errors.status}
-              placeholder="Property Status"
-              radius="lg"
-              selectedKeys={field.value ? new Set([field.value]) : new Set()}
-              size="lg"
-              startContent={<LuHouse className="text-default-400 text-xl" />}
-              variant="bordered"
-              onSelectionChange={(keys) => field.onChange(Array.from(keys)[0])}
-            >
-              {propertyStatuses.map((status) => (
-                <SelectItem key={status.key}>{status.label}</SelectItem>
-              ))}
-            </Select>
-          )}
-        />
-
-        <Controller
-          control={control}
           name="category"
           render={({ field }) => (
             <Select
@@ -455,19 +433,20 @@ export default function CreatePropertyPage() {
             control={control}
             name="country"
             render={({ field }) => (
-              <Select
+              <Autocomplete
                 aria-label="Country"
                 errorMessage={errors.country?.message}
                 isInvalid={!!errors.country}
                 placeholder="Country"
                 radius="lg"
-                selectedKeys={field.value ? new Set([field.value]) : new Set()}
+                selectedKey={field.value || ""}
                 size="lg"
                 variant="bordered"
-                onSelectionChange={(keys) => {
-                  const name = Array.from(keys)[0] as string;
+                onSelectionChange={(key) => {
+                  const name = key as string;
 
                   field.onChange(name ?? "");
+
                   if (name) {
                     setValue("state", "");
                     setValue("city", "");
@@ -475,60 +454,64 @@ export default function CreatePropertyPage() {
                 }}
               >
                 {allCountries.map((c: ICountry) => (
-                  <SelectItem key={c.name}>{c.name}</SelectItem>
+                  <AutocompleteItem key={c.name} textValue={c.name}>
+                    {c.flag} {c.name}
+                  </AutocompleteItem>
                 ))}
-              </Select>
+              </Autocomplete>
             )}
           />
           <Controller
             control={control}
             name="state"
             render={({ field }) => (
-              <Select
+              <Autocomplete
                 aria-label="State"
                 errorMessage={errors.state?.message}
                 isInvalid={!!errors.state}
                 placeholder="State"
                 radius="lg"
-                selectedKeys={field.value ? new Set([field.value]) : new Set()}
+                selectedKey={field.value || ""}
                 size="lg"
                 variant="bordered"
-                onSelectionChange={(keys) => {
-                  const name = Array.from(keys)[0] as string;
+                onSelectionChange={(key) => {
+                  const name = key as string;
 
                   field.onChange(name ?? "");
                   if (name) setValue("city", "");
                 }}
               >
                 {statesOfCountry.map((s: IState) => (
-                  <SelectItem key={s.name}>{s.name}</SelectItem>
+                  <AutocompleteItem key={s.name} textValue={s.name}>
+                    {s.name}
+                  </AutocompleteItem>
                 ))}
-              </Select>
+              </Autocomplete>
             )}
           />
           <Controller
             control={control}
             name="city"
             render={({ field }) => (
-              <Select
+              <Autocomplete
                 aria-label="City"
                 errorMessage={errors.city?.message}
                 isInvalid={!!errors.city}
                 placeholder="City"
                 radius="lg"
-                selectedKeys={field.value ? new Set([field.value]) : new Set()}
+                selectedKey={field.value || ""}
                 size="lg"
                 variant="bordered"
-                onSelectionChange={(keys) =>
-                  field.onChange((Array.from(keys)[0] as string) ?? "")
+                onSelectionChange={(key) =>
+                  field.onChange((key as string) ?? "")
                 }
               >
                 {citiesOfState.map((city: ICity) => (
-                  <SelectItem key={city.name} textValue={city.name}>
+                  <AutocompleteItem key={city.name} textValue={city.name}>
                     {city.name}
-                  </SelectItem>
+                  </AutocompleteItem>
                 ))}
-              </Select>
+              </Autocomplete>
             )}
           />
         </div>

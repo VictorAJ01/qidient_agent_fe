@@ -135,7 +135,7 @@ export type GetPropertyResponsePayload = {
 
 export type CreatePropertyPayload = {
   title: string;
-  slug?: string; // URL-friendly property slug (auto-generated if not provided)
+  slug?: string;
   description: string;
   price: number;
   type: string;
@@ -143,7 +143,6 @@ export type CreatePropertyPayload = {
   bathrooms: number;
   images?: File[];
   amenities?: string[];
-  // status: string;
   isRental: boolean;
   category: string;
   size?: number;

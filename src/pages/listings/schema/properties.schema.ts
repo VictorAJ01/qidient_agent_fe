@@ -31,7 +31,6 @@ export const createPropertySchema = yup.object({
     .max(10, "Maximum 10 images allowed")
     .required("Images are required"),
   amenities: yup.array().of(yup.string().defined()).optional(),
-  status: yup.string().required("Property status is required"),
   isRental: yup
     .boolean()
     .required("Please specify if property is for rent or sale"),
