@@ -21,6 +21,7 @@ import LeadsPage from "@/pages/leads";
 import BookingsPage from "@/pages/bookings/bookings.page";
 import NotificationsPage from "@/pages/notifications";
 import ProfilePage from "@/pages/profile/profile.page";
+import NotFoundPage from "@/pages/not_found/not_found.page";
 
 function App() {
   return (
@@ -78,6 +79,8 @@ function App() {
         />
         <Route element={<ProfilePage />} path={sidebarRoutes.profile} />
       </Route>
+
+      <Route element={<NotFoundPage />} path="*" />
     </Routes>
   );
 }
