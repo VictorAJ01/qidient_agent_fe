@@ -5,6 +5,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import {
+  Autocomplete,
+  AutocompleteItem,
   Button,
   Input,
   Select,
@@ -36,7 +38,6 @@ import ImageUploader from "./components/image_uploader";
 import {
   featuresOptions,
   propertyCategories,
-  propertyStatuses,
   propertyTypes,
 } from "./utils/data";
 
@@ -81,7 +82,6 @@ export default function UpdateListingPage() {
   });
 
   const {
-    register,
     handleSubmit,
     control,
     watch,
@@ -132,14 +132,19 @@ export default function UpdateListingPage() {
       state: property.state ?? "",
       city: property.city ?? "",
       country: property.country ?? "",
-      status: property.status ?? "available",
       isRental: property.isRental ?? false,
       category: property.category ?? "",
       size: property.size ?? 0,
       yearBuilt: property.yearBuilt ?? undefined,
-      amenities: property.amenities ?? [],
-      features: property.features ?? [],
-      tags: property.tags ?? [],
+      amenities: (property.amenities ?? []).map((a: any) =>
+        typeof a === "string" ? a : a._id,
+      ),
+      features: (property.features ?? []).map((f: any) =>
+        typeof f === "string" ? f : f._id,
+      ),
+      tags: (property.tags ?? []).map((t: any) =>
+        typeof t === "string" ? t : t._id,
+      ),
       images: imageUrls,
     });
   }, [property, reset]);
@@ -175,7 +180,6 @@ export default function UpdateListingPage() {
       type: data.type,
       bedrooms: data.bedrooms,
       bathrooms: data.bathrooms,
-      status: data.status as UpdatePropertyPayload["status"],
       isRental: data.isRental,
       category: data.category,
       state: data.state,
@@ -218,40 +222,60 @@ export default function UpdateListingPage() {
       </div>
 
       <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-        <Input
-          {...register("title")}
-          errorMessage={errors.title?.message}
-          isInvalid={!!errors.title}
-          placeholder="Property Title"
-          radius="lg"
-          size="lg"
-          startContent={<GoPerson className="text-default-400 text-xl" />}
-          variant="bordered"
+        <Controller
+          control={control}
+          name="title"
+          render={({ field }) => (
+            <Input
+              {...field}
+              errorMessage={errors.title?.message}
+              isInvalid={!!errors.title}
+              placeholder="Property Title"
+              radius="lg"
+              size="lg"
+              startContent={<GoPerson className="text-default-400 text-xl" />}
+              variant="bordered"
+            />
+          )}
         />
 
-        <Textarea
-          {...register("description")}
-          errorMessage={errors.description?.message}
-          isInvalid={!!errors.description}
-          placeholder="Property Description"
-          radius="lg"
-          size="lg"
-          startContent={
-            <GoPerson className="text-default-400 text-xl mt-0.5" />
-          }
-          variant="bordered"
+        <Controller
+          control={control}
+          name="description"
+          render={({ field }) => (
+            <Textarea
+              {...field}
+              errorMessage={errors.description?.message}
+              isInvalid={!!errors.description}
+              placeholder="Property Description"
+              radius="lg"
+              size="lg"
+              startContent={
+                <GoPerson className="text-default-400 text-xl mt-0.5" />
+              }
+              variant="bordered"
+            />
+          )}
         />
 
-        <Input
-          {...register("price", { valueAsNumber: true })}
-          errorMessage={errors.price?.message}
-          isInvalid={!!errors.price}
-          placeholder="Property Price"
-          radius="lg"
-          size="lg"
-          startContent={<FiTag className="text-default-400 text-xl" />}
-          type="number"
-          variant="bordered"
+        <Controller
+          control={control}
+          name="price"
+          render={({ field: { onChange, value, ...field } }) => (
+            <Input
+              {...field}
+              errorMessage={errors.price?.message}
+              isInvalid={!!errors.price}
+              placeholder="Property Price"
+              radius="lg"
+              size="lg"
+              startContent={<FiTag className="text-default-400 text-xl" />}
+              type="number"
+              value={value?.toString() ?? ""}
+              variant="bordered"
+              onChange={(e) => onChange(Number(e.target.value))}
+            />
+          )}
         />
 
         <Controller
@@ -369,29 +393,6 @@ export default function UpdateListingPage() {
 
         <Controller
           control={control}
-          name="status"
-          render={({ field }) => (
-            <Select
-              aria-label="Property status"
-              errorMessage={errors.status?.message}
-              isInvalid={!!errors.status}
-              placeholder="Property Status"
-              radius="lg"
-              selectedKeys={field.value ? new Set([field.value]) : new Set()}
-              size="lg"
-              startContent={<LuHouse className="text-default-400 text-xl" />}
-              variant="bordered"
-              onSelectionChange={(keys) => field.onChange(Array.from(keys)[0])}
-            >
-              {propertyStatuses.map((status) => (
-                <SelectItem key={status.key}>{status.label}</SelectItem>
-              ))}
-            </Select>
-          )}
-        />
-
-        <Controller
-          control={control}
           name="category"
           render={({ field }) => (
             <Select
@@ -445,29 +446,43 @@ export default function UpdateListingPage() {
           )}
         />
 
-        <Input
-          {...register("size", { valueAsNumber: true })}
-          errorMessage={errors.size?.message}
-          isInvalid={!!errors.size}
-          placeholder="Property Size (sq ft) or meters"
-          radius="lg"
-          size="lg"
-          startContent={<GoPerson className="text-default-400 text-xl" />}
-          type="number"
-          variant="bordered"
+        <Controller
+          control={control}
+          name="size"
+          render={({ field: { onChange, value, ...field } }) => (
+            <Input
+              {...field}
+              errorMessage={errors.size?.message}
+              isInvalid={!!errors.size}
+              placeholder="Property Size (sq ft) or meters"
+              radius="lg"
+              size="lg"
+              startContent={<GoPerson className="text-default-400 text-xl" />}
+              type="number"
+              value={value?.toString() ?? ""}
+              variant="bordered"
+              onChange={(e) => onChange(Number(e.target.value))}
+            />
+          )}
         />
 
-        <Textarea
-          {...register("address")}
-          errorMessage={errors.address?.message}
-          isInvalid={!!errors.address}
-          placeholder="Street address only (no city, state or country)"
-          radius="lg"
-          size="lg"
-          startContent={
-            <GoPerson className="text-default-400 text-xl mt-0.5" />
-          }
-          variant="bordered"
+        <Controller
+          control={control}
+          name="address"
+          render={({ field }) => (
+            <Textarea
+              {...field}
+              errorMessage={errors.address?.message}
+              isInvalid={!!errors.address}
+              placeholder="Street address only (no city, state or country)"
+              radius="lg"
+              size="lg"
+              startContent={
+                <GoPerson className="text-default-400 text-xl mt-0.5" />
+              }
+              variant="bordered"
+            />
+          )}
         />
 
         <Controller
@@ -506,17 +521,17 @@ export default function UpdateListingPage() {
             control={control}
             name="country"
             render={({ field }) => (
-              <Select
+              <Autocomplete
                 aria-label="Country"
                 errorMessage={errors.country?.message}
                 isInvalid={!!errors.country}
                 placeholder="Country"
                 radius="lg"
-                selectedKeys={field.value ? new Set([field.value]) : new Set()}
+                selectedKey={field.value || ""}
                 size="lg"
                 variant="bordered"
-                onSelectionChange={(keys) => {
-                  const name = Array.from(keys)[0] as string;
+                onSelectionChange={(key) => {
+                  const name = key as string;
 
                   field.onChange(name ?? "");
                   if (name) {
@@ -526,60 +541,64 @@ export default function UpdateListingPage() {
                 }}
               >
                 {allCountries.map((c: ICountry) => (
-                  <SelectItem key={c.name}>{c.name}</SelectItem>
+                  <AutocompleteItem key={c.name} textValue={c.name}>
+                    {c.flag} {c.name}
+                  </AutocompleteItem>
                 ))}
-              </Select>
+              </Autocomplete>
             )}
           />
           <Controller
             control={control}
             name="state"
             render={({ field }) => (
-              <Select
+              <Autocomplete
                 aria-label="State"
                 errorMessage={errors.state?.message}
                 isInvalid={!!errors.state}
                 placeholder="State"
                 radius="lg"
-                selectedKeys={field.value ? new Set([field.value]) : new Set()}
+                selectedKey={field.value || ""}
                 size="lg"
                 variant="bordered"
-                onSelectionChange={(keys) => {
-                  const name = Array.from(keys)[0] as string;
+                onSelectionChange={(key) => {
+                  const name = key as string;
 
                   field.onChange(name ?? "");
                   if (name) setValue("city", "");
                 }}
               >
                 {statesOfCountry.map((s: IState) => (
-                  <SelectItem key={s.name}>{s.name}</SelectItem>
+                  <AutocompleteItem key={s.name} textValue={s.name}>
+                    {s.name}
+                  </AutocompleteItem>
                 ))}
-              </Select>
+              </Autocomplete>
             )}
           />
           <Controller
             control={control}
             name="city"
             render={({ field }) => (
-              <Select
+              <Autocomplete
                 aria-label="City"
                 errorMessage={errors.city?.message}
                 isInvalid={!!errors.city}
                 placeholder="City"
                 radius="lg"
-                selectedKeys={field.value ? new Set([field.value]) : new Set()}
+                selectedKey={field.value || ""}
                 size="lg"
                 variant="bordered"
-                onSelectionChange={(keys) =>
-                  field.onChange((Array.from(keys)[0] as string) ?? "")
+                onSelectionChange={(key) =>
+                  field.onChange((key as string) ?? "")
                 }
               >
                 {citiesOfState.map((city: ICity) => (
-                  <SelectItem key={city.name} textValue={city.name}>
+                  <AutocompleteItem key={city.name} textValue={city.name}>
                     {city.name}
-                  </SelectItem>
+                  </AutocompleteItem>
                 ))}
-              </Select>
+              </Autocomplete>
             )}
           />
         </div>

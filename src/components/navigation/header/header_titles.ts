@@ -19,8 +19,14 @@ export const headerInfo: Array<HeaderInfo> = [
   },
   {
     title: "Listings",
-    path: sidebarRoutes.viewClient,
+    path: sidebarRoutes.viewListing,
     description: "Manage performance metrics, listings, and commission details",
+  },
+  {
+    title: "Listings",
+    path: sidebarRoutes.updateListing,
+    description:
+      "Modify property details, pricing, location, and images for an existing listing",
   },
   {
     title: "Create Property",

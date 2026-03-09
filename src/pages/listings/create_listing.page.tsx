@@ -192,16 +192,24 @@ export default function CreatePropertyPage() {
           variant="bordered"
         />
 
-        <Input
-          {...register("price", { valueAsNumber: true })}
-          errorMessage={errors.price?.message}
-          isInvalid={!!errors.price}
-          placeholder="Property Price"
-          radius="lg"
-          size="lg"
-          startContent={<FiTag className="text-default-400 text-xl" />}
-          type="number"
-          variant="bordered"
+        <Controller
+          control={control}
+          name="price"
+          render={({ field: { onChange, value, ...field } }) => (
+            <Input
+              {...field}
+              errorMessage={errors.price?.message}
+              isInvalid={!!errors.price}
+              placeholder="Property Price"
+              radius="lg"
+              size="lg"
+              startContent={<FiTag className="text-default-400 text-xl" />}
+              type="number"
+              value={value?.toString() ?? ""}
+              variant="bordered"
+              onChange={(e) => onChange(Number(e.target.value))}
+            />
+          )}
         />
 
         <Controller
@@ -372,16 +380,24 @@ export default function CreatePropertyPage() {
           )}
         />
 
-        <Input
-          {...register("size", { valueAsNumber: true })}
-          errorMessage={errors.size?.message}
-          isInvalid={!!errors.size}
-          placeholder="Property Size (sq ft) or meters"
-          radius="lg"
-          size="lg"
-          startContent={<GoPerson className="text-default-400 text-xl" />}
-          type="number"
-          variant="bordered"
+        <Controller
+          control={control}
+          name="size"
+          render={({ field: { onChange, value, ...field } }) => (
+            <Input
+              {...field}
+              errorMessage={errors.size?.message}
+              isInvalid={!!errors.size}
+              placeholder="Property Size (sq ft) or meters"
+              radius="lg"
+              size="lg"
+              startContent={<GoPerson className="text-default-400 text-xl" />}
+              type="number"
+              value={value?.toString() ?? ""}
+              variant="bordered"
+              onChange={(e) => onChange(Number(e.target.value))}
+            />
+          )}
         />
 
         <Textarea

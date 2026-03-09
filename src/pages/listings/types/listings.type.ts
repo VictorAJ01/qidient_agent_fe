@@ -213,7 +213,7 @@ export type UpdatePropertyResponsePayload = {
   bathrooms: number;
   images: PropertyImage[];
   amenities: string[];
-  status: PropertyStatus;
+  status?: PropertyStatus;
   isRental: boolean;
   category: string;
   size: number;

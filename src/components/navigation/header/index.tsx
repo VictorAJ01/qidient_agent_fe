@@ -29,6 +29,9 @@ export default function Header(props: HeadProps) {
   const listingDetailsRoute =
     location.pathname === `${sidebarRoutes.listings}/${params.id}`;
 
+  const updateListingRoute =
+    location.pathname === `${sidebarRoutes.listings}/${params.id}/edit`;
+
   const isDisplayHeader = location.pathname !== sidebarRoutes.notifications;
 
   const isAddHeadingVerticalPadding =
@@ -66,7 +69,17 @@ export default function Header(props: HeadProps) {
               {headerInfo.map((info) => {
                 const matchRoute = location.pathname === info.path;
 
-                if (matchRoute)
+                // Handle dynamic routes with parameters
+                const matchDynamicRoute =
+                  (info.path === sidebarRoutes.viewListing &&
+                    listingDetailsRoute) ||
+                  (info.path === sidebarRoutes.updateListing &&
+                    updateListingRoute) ||
+                  (info.path === sidebarRoutes.viewClient &&
+                    clientDetailsRoute) ||
+                  (info.path === sidebarRoutes.viewLeads && leadDetailsRoute);
+
+                if (matchRoute || matchDynamicRoute)
                   return (
                     <div key={info.path} className="flex flex-col">
                       <h1 className="text-lg md:text-2xl font-semibold text-black2">
@@ -78,39 +91,6 @@ export default function Header(props: HeadProps) {
                     </div>
                   );
               })}
-
-              {listingDetailsRoute && (
-                <div className="flex flex-col">
-                  <h1 className="text-lg md:text-2xl font-medium sm:font-semibold text-black">
-                    {headerInfo[2].title}
-                  </h1>
-                  <span className="text-base hidden sm:block font-normal text-agency-purple-200">
-                    {headerInfo[2].description}
-                  </span>
-                </div>
-              )}
-
-              {clientDetailsRoute && (
-                <div className="flex flex-col">
-                  <h1 className="text-lg md:text-2xl font-medium sm:font-semibold text-black">
-                    {headerInfo[4].title}
-                  </h1>
-                  <span className="text-base hidden sm:block font-normal text-agency-purple-200">
-                    {headerInfo[4].description}
-                  </span>
-                </div>
-              )}
-
-              {leadDetailsRoute && (
-                <div className="flex flex-col">
-                  <h1 className="text-lg md:text-2xl font-medium sm:font-semibold text-black">
-                    {headerInfo[6].title}
-                  </h1>
-                  <span className="text-base hidden sm:block font-normal text-agency-purple-200">
-                    {headerInfo[6].description}
-                  </span>
-                </div>
-              )}
             </div>
 
             <div className="flex items-center space-x-6">
