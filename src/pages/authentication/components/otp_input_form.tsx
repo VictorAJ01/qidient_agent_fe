@@ -9,6 +9,8 @@ import { VerifyOtpSchema } from "../schema/auth.schema";
 import { OtpResponsePayload, Role } from "../types/auth.type";
 import { resendOtpApi, verifyOtpApi } from "../api/auth.api";
 
+import { setCredentials } from "@/common";
+
 export type OtpInputFormProps = {
   onSuccess: (data: OtpResponsePayload) => void;
 };
@@ -58,7 +60,8 @@ export default function OtpInputForm({ onSuccess }: OtpInputFormProps) {
 
   const { mutate: resendOtp, isPending: isResending } = useMutation({
     mutationFn: resendOtpApi,
-    onSuccess: () => {
+    onSuccess: (data) => {
+      setCredentials(data.accessToken);
       addToast({
         title: "Otp resent successfully",
         description: "Please check your email",

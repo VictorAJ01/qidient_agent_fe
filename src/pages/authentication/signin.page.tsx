@@ -14,7 +14,6 @@ import { useMutation } from "@tanstack/react-query";
 
 import { SignInSchema } from "./schema/auth.schema";
 import { loginApi, resendOtpApi } from "./api/auth.api";
-import { Role } from "./types/auth.type";
 
 import { authRoutes, sidebarRoutes } from "@/routes";
 import { setCredentials } from "@/common/persistence";
@@ -28,6 +27,7 @@ export default function SigninPage() {
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors },
   } = useForm<SignInSchema>({
     resolver: yupResolver(SignInSchema),
@@ -40,7 +40,8 @@ export default function SigninPage() {
 
   const { mutate: resendOtp } = useMutation({
     mutationFn: resendOtpApi,
-    onSuccess: () => {
+    onSuccess: (data) => {
+      setCredentials(data.accessToken);
       addToast({
         title: "Otp sent successfully",
         description: "Please check your email",
@@ -75,11 +76,10 @@ export default function SigninPage() {
         color: "danger",
       });
 
-      const email = localStorage.getItem("email");
-      const role = localStorage.getItem("role") as Role;
+      const { email, role } = getValues();
 
       if (email && role && error === "Email verification required") {
-        resendOtp({ email, role });
+        resendOtp({ email: email.trim().toLowerCase(), role });
         navigate(authRoutes.verifySignupOTP);
       } else {
         navigate(authRoutes.login);
