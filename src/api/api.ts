@@ -4,8 +4,24 @@ import Axios from "axios";
 
 import { getCredentials } from "@/common";
 
+export const endpoints: Record<string, string> = Object.freeze({
+  default: "https://api-stg.qidient.com/api",
+  development: "https://api-stg.qidient.com/api",
+  staging: "https://api-stg.qidient.com/api",
+  production: "https://api.qidient.com/api",
+});
+
+const mode: string = import.meta.env.MODE;
+
+export const getApiEndpoint = () => {
+  const baseUrl =
+    endpoints[mode] || import.meta.env.VITE_MAIN_API || endpoints["default"];
+
+  return baseUrl;
+};
+
 const AxiosInstance = Axios.create({
-  baseURL: baseApi,
+  baseURL: getApiEndpoint(),
 });
 
 const getAuthHeaders = () => {
