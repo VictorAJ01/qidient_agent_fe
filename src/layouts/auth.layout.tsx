@@ -1,8 +1,9 @@
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { Image } from "@heroui/react";
 
 import AuthBg from "@/assets/auth-bg.jpg";
 import Logo from "@/assets/logo.png";
+import { authRoutes } from "@/routes";
 
 export default function AuthLayout() {
   return (
@@ -14,7 +15,9 @@ export default function AuthLayout() {
     >
       <main className="w-full max-w-2xl h-auto flex items-center justify-center">
         <div className="bg-light-primary-bg  p-8 w-full rounded-2xl shadow">
-          <Image alt="Logo" className="w-25 h-25 object-contain" src={Logo} />
+          <Link to={authRoutes.login}>
+            <Image alt="Logo" className="w-25 h-25 object-contain" src={Logo} />
+          </Link>
           <Outlet />
         </div>
       </main>

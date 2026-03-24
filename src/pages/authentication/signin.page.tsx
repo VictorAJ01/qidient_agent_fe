@@ -13,7 +13,8 @@ import { osName, isMobile } from "react-device-detect";
 import { useMutation } from "@tanstack/react-query";
 
 import { SignInSchema } from "./schema/auth.schema";
-import { loginApi } from "./api/auth.api";
+import { loginApi, resendOtpApi } from "./api/auth.api";
+import { Role } from "./types/auth.type";
 
 import { authRoutes, sidebarRoutes } from "@/routes";
 import { setCredentials } from "@/common/persistence";
@@ -37,6 +38,26 @@ export default function SigninPage() {
     },
   });
 
+  const { mutate: resendOtp } = useMutation({
+    mutationFn: resendOtpApi,
+    onSuccess: () => {
+      addToast({
+        title: "Otp sent successfully",
+        description: "Please check your email",
+        color: "success",
+      });
+    },
+    onError: (error: string | Error) => {
+      const errorMessage = typeof error === "string" ? error : error.message;
+
+      addToast({
+        title: "Send otp failed",
+        description: errorMessage || "Failed to send otp",
+        color: "danger",
+      });
+    },
+  });
+
   const { mutate, isPending } = useMutation({
     mutationFn: loginApi,
     onSuccess: (data) => {
@@ -53,6 +74,16 @@ export default function SigninPage() {
         description: error,
         color: "danger",
       });
+
+      const email = localStorage.getItem("email");
+      const role = localStorage.getItem("role") as Role;
+
+      if (email && role && error === "Email verification required") {
+        resendOtp({ email, role });
+        navigate(authRoutes.verifySignupOTP);
+      } else {
+        navigate(authRoutes.login);
+      }
     },
   });
 
